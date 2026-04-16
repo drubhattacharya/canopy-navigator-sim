@@ -3,15 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Canopy Navigator — Interactive patient simulation for the Eisenhower Health SDOH screening pilot. Watch a complete ED encounter from tablet intake to billing cascade.">
-<meta property="og:title" content="Canopy Navigator — Patient Encounter Simulation">
-<meta property="og:description" content="Step through a complete ED encounter: SDOH intake, AI teach-back, billing cascade, and Epic write-back.">
 <title>Canopy Navigator · Patient Encounter Simulation</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --navy:#1F3864;--teal:#006D6B;--ltblue:#DAEEF3;--ltgray:#F5F5F5;
-  --white:#FFFFFF;--accent:#C55A11;--ltgold:#FFF8E8;--ltgreen:#F0FAF0;--ltred:#FEF2F2;
   --text-primary:#1a1a1a;--text-secondary:#555;--text-muted:#888;
   --border:#E0E0E0;--border-strong:#BDBDBD;
   --info-bg:#EBF4FF;--info-border:#2563EB;--info-text:#1D4ED8;
@@ -19,148 +15,139 @@
   --danger-bg:#FEF2F2;--danger-border:#DC2626;--danger-text:#991B1B;
   --success-bg:#F0FDF4;--success-border:#16A34A;--success-text:#166534;
 }
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#F0F4F8;color:var(--text-primary);min-height:100vh}
-
-/* ── NAV ── */
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#F0F4F8;color:var(--text-primary)}
 .nav{background:var(--navy);padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
 .nav-logo{display:flex;align-items:center;gap:.6rem}
-.nav-logo-mark{width:28px;height:28px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px}
+.logo-mark{width:28px;height:28px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px}
 .nav-name{color:#fff;font-weight:600;font-size:15px}
-.nav-subtitle{color:rgba(255,255,255,.55);font-size:11px}
-.nav-badge{background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);font-size:10px;font-weight:500;padding:3px 10px;border-radius:20px;letter-spacing:.05em}
-
-/* ── HERO ── */
-.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);padding:2rem 1.5rem 1.5rem;color:#fff;text-align:center}
-.hero h1{font-size:22px;font-weight:600;margin-bottom:.35rem}
-.hero p{font-size:13px;color:rgba(255,255,255,.75);max-width:560px;margin:0 auto .75rem;line-height:1.6}
-.hero-chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
-.chip{background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:10px;font-weight:500;padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.2)}
-
-/* ── PATIENT BAR ── */
-.patient-bar{background:#fff;border-bottom:1px solid var(--border);padding:.6rem 1.25rem;display:flex;flex-wrap:wrap;gap:.5rem 1.5rem}
-.pb-item{min-width:0}
-.pb-label{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted)}
-.pb-val{font-size:12px;font-weight:500;color:var(--text-primary)}
-
-/* ── STAGE BAR ── */
-.stage-bar{background:#fff;border-bottom:1px solid var(--border);padding:.4rem 1.25rem;display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
-.stage-bar::-webkit-scrollbar{display:none}
-.stage{padding:.3rem .7rem;font-size:10px;font-weight:500;color:var(--text-muted);border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer;transition:all .15s}
+.nav-sub{color:rgba(255,255,255,.5);font-size:11px}
+.nav-badge{background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);font-size:10px;font-weight:500;padding:3px 10px;border-radius:20px}
+.hero{background:linear-gradient(135deg,var(--navy),var(--teal));padding:1.75rem 1.5rem 1.25rem;color:#fff;text-align:center}
+.hero h1{font-size:21px;font-weight:600;margin-bottom:.3rem}
+.hero p{font-size:13px;color:rgba(255,255,255,.75);max-width:540px;margin:0 auto .7rem;line-height:1.6}
+.chips{display:flex;flex-wrap:wrap;gap:5px;justify-content:center}
+.chip{background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px;border:1px solid rgba(255,255,255,.2)}
+.pbar{background:#fff;border-bottom:1px solid var(--border);padding:.55rem 1.25rem;display:flex;flex-wrap:wrap;gap:.5rem 1.5rem}
+.pl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted)}
+.pv{font-size:12px;font-weight:500;color:var(--text-primary)}
+.stages{background:#fff;border-bottom:1px solid var(--border);padding:.35rem 1.25rem;display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+.stages::-webkit-scrollbar{display:none}
+.stage{padding:.3rem .65rem;font-size:10px;font-weight:500;color:var(--text-muted);border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer;transition:all .15s}
 .stage.active{color:var(--teal);border-bottom-color:var(--teal)}
 .stage.done{color:var(--success-text);border-bottom-color:var(--success-border)}
-
-/* ── MAIN LAYOUT ── */
-.sim-body{max-width:960px;margin:1rem auto;padding:0 1rem}
-.main-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
-@media(max-width:680px){.main-grid{grid-template-columns:1fr}}
-
-/* ── TABLET FRAME ── */
-.tablet-wrap{background:#fff;border-radius:16px;border:1.5px solid var(--border-strong);padding:12px;box-shadow:0 4px 16px rgba(0,0,0,.08)}
-.tablet-chrome{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:0 2px}
+.body{max-width:960px;margin:1rem auto;padding:0 1rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+@media(max-width:660px){.grid{grid-template-columns:1fr}}
+/* Tablet */
+.tablet{background:#fff;border-radius:16px;border:1.5px solid var(--border-strong);padding:12px;box-shadow:0 4px 16px rgba(0,0,0,.07)}
+.chrome{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .app-name{font-size:11px;font-weight:600;color:var(--teal)}
-.step-label{font-size:10px;color:var(--text-muted)}
-.progress-track{height:3px;background:var(--border);border-radius:2px;margin-bottom:12px;overflow:hidden}
-.progress-fill{height:100%;background:var(--teal);border-radius:2px;transition:width .4s ease}
-.screen{min-height:340px;display:flex;flex-direction:column}
-
-/* ── SCREEN COMPONENTS ── */
-.screen-title{font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:.4rem;line-height:1.45}
-.screen-sub{font-size:12px;color:var(--text-secondary);margin-bottom:.75rem;line-height:1.5}
-.opts{display:flex;flex-direction:column;gap:7px;margin:.25rem 0}
-.opt{padding:.45rem .75rem;border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text-secondary);cursor:default;line-height:1.3}
-.opt.sel{border-color:var(--info-border);background:var(--info-bg);color:var(--info-text);font-weight:500}
-.opt.sel-warn{border-color:var(--warn-border);background:var(--warn-bg);color:var(--warn-text);font-weight:500}
-.opt.sel-danger{border-color:var(--danger-border);background:var(--danger-bg);color:var(--danger-text);font-weight:500}
-.opt.sel-ok{border-color:var(--border);background:var(--ltgray);color:var(--text-secondary)}
-.loinc-tag{display:inline-block;font-size:9px;font-weight:600;padding:2px 7px;border-radius:4px;margin-bottom:.4rem;font-family:"SF Mono",monospace;letter-spacing:.02em}
+.chrome-r{display:flex;align-items:center;gap:6px}
+.prog-lbl{font-size:10px;color:var(--text-muted)}
+/* Language toggle — in original HTML, works with no CSP issue */
+.ltrow{display:flex;gap:2px}
+.ltbtn{font-size:9px;font-weight:600;padding:2px 7px;border-radius:4px;border:1px solid var(--border-strong);background:#fff;color:var(--text-muted);cursor:pointer;transition:all .12s}
+.ltbtn.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.ptrack{height:3px;background:var(--border);border-radius:2px;margin-bottom:12px;overflow:hidden}
+.pfill{height:100%;background:var(--teal);border-radius:2px;transition:width .4s}
+.screen{min-height:320px;display:flex;flex-direction:column}
+/* Screen elements */
+.stitle{font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:.35rem;line-height:1.45}
+.ssub{font-size:12px;color:var(--text-secondary);margin-bottom:.6rem;line-height:1.5}
+.yn{display:flex;gap:8px;margin:.5rem 0}
+.yn-btn{flex:1;padding:.6rem;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-weight:600;text-align:center;cursor:default;transition:all .12s}
+.yn-yes{border-color:var(--info-border);background:var(--info-bg);color:var(--info-text)}
+.yn-no{border-color:var(--border);background:var(--ltgray);color:var(--text-secondary)}
+.yn-yes-danger{border-color:var(--danger-border);background:var(--danger-bg);color:var(--danger-text)}
+.yn-no-sel{border-color:var(--border-strong);background:#f0f0f0;color:var(--text-secondary)}
+.loinc-tag{display:inline-block;font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px;margin-bottom:.4rem;font-family:monospace}
 .lt-food{background:#FFF3E0;color:#E65100}
 .lt-transport{background:var(--info-bg);color:var(--info-text)}
 .lt-neutral{background:var(--ltgray);color:var(--text-muted)}
-.lt-discharge{background:var(--success-bg);color:var(--success-text)}
-.welcome-icon{width:48px;height:48px;border-radius:50%;background:var(--info-bg);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto .75rem}
-.lang-row{display:flex;gap:8px;margin:.5rem 0}
-.lang-btn{flex:1;padding:.45rem;border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:500;text-align:center;cursor:default}
+.lt-success{background:var(--success-bg);color:var(--success-text)}
+/* Welcome */
+.w-icon{width:46px;height:46px;border-radius:50%;background:var(--info-bg);display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto .7rem}
+/* Language row inside screen — uses data-lang attribute, no onclick */
+.lang-row{display:flex;gap:8px;margin:.6rem 0}
+.lang-btn{flex:1;padding:.45rem;border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:500;text-align:center;cursor:pointer;transition:all .12s}
 .lang-btn.sel{border-color:var(--teal);background:#E8F5F5;color:var(--teal)}
-.chat-area{display:flex;flex-direction:column;gap:8px;margin:.25rem 0}
-.chat-group{display:flex;flex-direction:column;gap:2px}
-.chat-label{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted)}
-.chat-label.right{text-align:right}
-.bubble{padding:.5rem .75rem;border-radius:12px;font-size:12px;line-height:1.5;max-width:92%}
-.bubble-ai{background:var(--ltgray);color:var(--text-primary);align-self:flex-start;border-radius:4px 12px 12px 12px}
-.bubble-pt{background:var(--info-bg);color:var(--info-text);align-self:flex-end;border-radius:12px 4px 12px 12px;margin-left:auto}
-.grade-pill{display:inline-flex;align-items:center;gap:5px;padding:.3rem .65rem;border-radius:20px;font-size:11px;font-weight:500;margin-top:3px}
-.grade-pass{background:var(--success-bg);color:var(--success-text);border:1px solid var(--success-border)}
-.grade-fail{background:var(--danger-bg);color:var(--danger-text);border:1px solid var(--danger-border)}
-.remediate{background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:8px;padding:.45rem .65rem;font-size:11px;color:var(--warn-text);margin-top:6px;line-height:1.4}
-.score-card{background:var(--ltgray);border-radius:12px;padding:1.25rem;text-align:center;margin:.25rem 0}
-.score-num{font-size:40px;font-weight:700;color:var(--text-primary);line-height:1}
-.score-denom{font-size:18px;font-weight:400;color:var(--text-muted)}
-.score-lbl{font-size:11px;color:var(--text-secondary);margin:.35rem 0}
-.score-badge{display:inline-block;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600}
-.sb-pass{background:var(--success-bg);color:var(--success-text);border:1px solid var(--success-border)}
-.sb-fail{background:var(--danger-bg);color:var(--danger-text)}
-.score-rows{margin-top:.75rem;text-align:left}
-.score-row{display:flex;justify-content:space-between;font-size:11px;padding:.2rem 0;border-bottom:1px solid var(--border)}
-.score-row:last-child{border-bottom:none}
-.pass-mark{color:var(--success-text);font-weight:600}
-.fail-mark{color:var(--danger-text);font-weight:600}
-.edu-doc{border-left:3px solid var(--teal);background:var(--ltblue);border-radius:0 8px 8px 0;padding:.55rem .75rem;margin:.3rem 0}
-.edu-doc h5{font-size:11px;font-weight:600;color:var(--navy);margin-bottom:.2rem}
-.edu-doc p{font-size:10px;color:#444;line-height:1.4}
-.scale-row{display:flex;gap:5px;margin:.35rem 0}
-.scale-btn{flex:1;padding:.4rem .2rem;border:1px solid var(--border);border-radius:6px;font-size:10px;text-align:center;cursor:default}
-.scale-btn.sel{background:var(--warn-bg);border-color:var(--warn-border);color:var(--warn-text);font-weight:600}
-.thank-box{background:var(--success-bg);border:1px solid var(--success-border);border-radius:10px;padding:.65rem .9rem;margin-bottom:.65rem}
+/* Two-Q screen divider */
+.q-divider{border-top:1px solid var(--border);margin:.6rem 0;padding-top:.6rem}
+/* Education */
+.thank-box{background:var(--success-bg);border:1px solid var(--success-border);border-radius:10px;padding:.6rem .85rem;margin-bottom:.6rem}
 .thank-box p{font-size:12px;font-weight:600;color:var(--success-text)}
 .thank-box span{font-size:11px;color:var(--success-text);opacity:.8}
-.billing-list{margin:.25rem 0}
-.bill-row{display:flex;align-items:baseline;justify-content:space-between;padding:.3rem 0;border-bottom:1px solid var(--border);gap:6px}
-.bill-row:last-child{border-bottom:none}
-.bill-code{font-size:10px;font-weight:700;font-family:"SF Mono",monospace;color:var(--text-primary);min-width:62px;flex-shrink:0}
-.bill-desc{font-size:10px;color:var(--text-secondary);flex:1;line-height:1.3}
-.bill-amt{font-size:11px;font-weight:600;color:#166534;white-space:nowrap}
-.bill-total{display:flex;justify-content:space-between;padding:.4rem 0;font-size:12px;font-weight:700;border-top:1.5px solid var(--border-strong);margin-top:4px}
-.fhir-list{font-family:"SF Mono",monospace;font-size:10px;line-height:1.9;background:#F8FAFC;border-radius:8px;padding:.65rem .8rem}
-.fhir-key{color:var(--info-text)}
-.fhir-warn{color:var(--warn-text)}
-.fhir-danger{color:var(--danger-text)}
-.fhir-ok{color:var(--success-text)}
-.fhir-muted{color:var(--text-muted)}
-
-/* ── EVENT LOG ── */
-.event-panel{background:#fff;border-radius:12px;border:1.5px solid var(--border);padding:10px 12px;min-height:340px}
-.event-header{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border)}
-.event-list{display:flex;flex-direction:column;gap:6px}
-.ev{padding:.4rem .65rem;border-radius:7px;font-size:11px;line-height:1.4;border-left:3px solid}
+.edu-doc{border-left:3px solid var(--teal);background:var(--ltblue);border-radius:0 8px 8px 0;padding:.5rem .7rem;margin:.25rem 0}
+.edu-doc h5{font-size:11px;font-weight:600;color:var(--navy);margin-bottom:.2rem}
+.edu-doc p{font-size:10px;color:#444;line-height:1.4}
+/* Chat */
+.chat-area{display:flex;flex-direction:column;gap:7px;margin:.25rem 0}
+.chat-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted)}
+.chat-lbl.r{text-align:right}
+.bubble{padding:.5rem .7rem;border-radius:12px;font-size:12px;line-height:1.5;max-width:92%}
+.b-ai{background:var(--ltgray);color:var(--text-primary);align-self:flex-start;border-radius:4px 12px 12px 12px}
+.b-pt{background:var(--info-bg);color:var(--info-text);align-self:flex-end;border-radius:12px 4px 12px 12px;margin-left:auto}
+.grade{display:inline-flex;align-items:center;gap:5px;padding:.3rem .6rem;border-radius:20px;font-size:11px;font-weight:500;margin-top:3px}
+.g-pass{background:var(--success-bg);color:var(--success-text);border:1px solid var(--success-border)}
+.g-fail{background:var(--danger-bg);color:var(--danger-text);border:1px solid var(--danger-border)}
+.remediate{background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:8px;padding:.4rem .65rem;font-size:11px;color:var(--warn-text);margin-top:5px;line-height:1.4}
+/* Score */
+.score-card{background:var(--ltgray);border-radius:12px;padding:1.1rem;text-align:center;margin:.2rem 0}
+.snum{font-size:38px;font-weight:700;color:var(--text-primary);line-height:1}
+.sden{font-size:17px;font-weight:400;color:var(--text-muted)}
+.slbl{font-size:11px;color:var(--text-secondary);margin:.3rem 0}
+.sbadge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:11px;font-weight:600;background:var(--success-bg);color:var(--success-text);border:1px solid var(--success-border)}
+.srows{margin-top:.7rem;text-align:left}
+.srow{display:flex;justify-content:space-between;font-size:11px;padding:.2rem 0;border-bottom:1px solid var(--border)}
+.srow:last-child{border-bottom:none}
+.pm{color:var(--success-text);font-weight:600}
+.fm{color:var(--danger-text);font-weight:600}
+/* Billing */
+.blist{margin:.2rem 0}
+.brow{display:flex;align-items:baseline;justify-content:space-between;padding:.3rem 0;border-bottom:1px solid var(--border);gap:6px}
+.bcode{font-size:10px;font-weight:700;font-family:monospace;color:var(--text-primary);min-width:60px;flex-shrink:0}
+.bdesc{font-size:10px;color:var(--text-secondary);flex:1;line-height:1.3}
+.bamt{font-size:11px;font-weight:600;color:#166534;white-space:nowrap}
+.btotal{display:flex;justify-content:space-between;padding:.4rem 0;font-size:12px;font-weight:700;border-top:1.5px solid var(--border-strong);margin-top:3px}
+/* FHIR */
+.fhir{font-family:monospace;font-size:10px;line-height:1.9;background:#F8FAFC;border-radius:8px;padding:.6rem .75rem}
+.fk{color:var(--info-text)}
+.fw{color:var(--warn-text)}
+.fd{color:var(--danger-text)}
+.fo{color:var(--success-text)}
+.fm2{color:var(--text-muted)}
+.staff-note{background:var(--ltgray);border:1px solid var(--border);border-radius:7px;padding:.4rem .65rem;font-size:10px;color:var(--text-muted);margin-bottom:.5rem;font-style:italic}
+/* Urgency box */
+.urg-box{background:#FEF2F2;border:1.5px solid #DC2626;border-radius:10px;padding:.55rem .8rem;margin-bottom:.6rem}
+.urg-box p{font-size:11px;font-weight:600;color:#991B1B}
+/* Event log */
+.evpanel{background:#fff;border-radius:12px;border:1.5px solid var(--border);padding:10px 12px}
+.evhdr{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.ev{padding:.4rem .6rem;border-radius:7px;font-size:11px;line-height:1.4;border-left:3px solid;margin-bottom:5px}
 .ev-info{background:var(--ltgray);border-color:var(--border-strong);color:var(--text-secondary)}
 .ev-trigger{background:var(--info-bg);border-color:var(--info-border);color:var(--info-text)}
 .ev-mod{background:var(--warn-bg);border-color:var(--warn-border);color:var(--warn-text)}
 .ev-high{background:var(--danger-bg);border-color:var(--danger-border);color:var(--danger-text)}
 .ev-success{background:var(--success-bg);border-color:var(--success-border);color:var(--success-text)}
-.ev-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.7;margin-bottom:1px}
+.ev-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.7;margin-bottom:1px}
 .ev-new{outline:1.5px solid rgba(0,0,0,.1);outline-offset:1px}
-
-/* ── ANNOTATION ── */
-.annotation{background:#fff;border:1px solid var(--border);border-radius:10px;padding:.65rem .9rem;margin-top:10px;font-size:11.5px;color:var(--text-secondary);line-height:1.6}
-.annotation strong{color:var(--text-primary);font-weight:600}
-.annotation .at{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:3px}
-
-/* ── NAVIGATION ── */
-.nav-controls{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px;padding-bottom:2rem}
-.nav-btn{padding:.45rem 1.1rem;font-size:12px;font-weight:600;border:1.5px solid var(--border-strong);border-radius:8px;cursor:pointer;background:#fff;color:var(--text-primary);transition:all .12s}
-.nav-btn:hover:not(:disabled){background:var(--ltgray)}
-.nav-btn:disabled{opacity:.3;cursor:not-allowed}
-.step-info{text-align:center;min-width:90px}
-.step-num{font-size:12px;font-weight:600;color:var(--text-primary)}
-.step-name{font-size:10px;color:var(--text-muted);margin-top:1px}
-.dots-row{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:5px;max-width:320px}
+/* Annotation */
+.ann{background:#fff;border:1px solid var(--border);border-radius:10px;padding:.6rem .85rem;margin-top:10px;font-size:11.5px;color:var(--text-secondary);line-height:1.6}
+.ann strong{color:var(--text-primary);font-weight:600}
+.at{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:3px}
+/* Nav controls */
+.nav-ctrl{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px;padding-bottom:2rem}
+.nbtn{padding:.45rem 1rem;font-size:12px;font-weight:600;border:1.5px solid var(--border-strong);border-radius:8px;cursor:pointer;background:#fff;color:var(--text-primary);transition:all .12s}
+.nbtn:hover:not(:disabled){background:var(--ltgray)}
+.nbtn:disabled{opacity:.3;cursor:not-allowed}
+.sinfo{text-align:center;min-width:80px}
+.snum2{font-size:12px;font-weight:600}
+.sname{font-size:10px;color:var(--text-muted);margin-top:1px}
+.dots{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:5px;max-width:300px}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--border-strong);cursor:pointer;transition:all .12s;flex-shrink:0}
 .dot.active{background:var(--teal);transform:scale(1.3)}
 .dot.done{background:var(--success-border)}
-
-/* ── FOOTER ── */
-footer{background:var(--navy);color:rgba(255,255,255,.55);text-align:center;padding:1rem;font-size:11px;margin-top:2rem}
-footer a{color:rgba(255,255,255,.7);text-decoration:none}
+footer{background:var(--navy);color:rgba(255,255,255,.5);text-align:center;padding:1rem;font-size:11px;margin-top:2rem}
 footer strong{color:rgba(255,255,255,.85)}
 </style>
 </head>
@@ -168,37 +155,37 @@ footer strong{color:rgba(255,255,255,.85)}
 
 <nav class="nav">
   <div class="nav-logo">
-    <div class="nav-logo-mark">CN</div>
-    <div><div class="nav-name">Canopy Navigator</div><div class="nav-subtitle">Patient Encounter Simulation</div></div>
+    <div class="logo-mark">CN</div>
+    <div><div class="nav-name">Canopy Navigator</div><div class="nav-sub">Patient Encounter Simulation</div></div>
   </div>
-  <div class="nav-badge">Eisenhower Health ED Pilot · 2026</div>
+  <div class="nav-badge">Eisenhower Health ED Pilot &middot; 2026</div>
 </nav>
 
 <div class="hero">
-  <h1>Navigator in action — Rosa Mendez, ED encounter</h1>
-  <p>Step through a complete Emergency Department SDOH intake: patient tablet screens, AI teach-back, branching decisions, and the billing cascade from a single 3-minute screen.</p>
-  <div class="hero-chips">
-    <div class="chip">T2 Triage → T7 Post-discharge</div>
-    <div class="chip">Multi-domain SDOH</div>
+  <h1>Navigator in action &mdash; Rosa Mendez, ED encounter</h1>
+  <p>Step through a complete ED SDOH intake with binary Yes/No questions. Toggle <strong>EN / ES</strong> on the tablet at any step to switch languages. System events and annotations stay in English for all stakeholder audiences.</p>
+  <div class="chips">
+    <div class="chip">T2 Triage &rarr; T7 Post-discharge</div>
+    <div class="chip">Binary Yes / No screens</div>
+    <div class="chip">Bilingual EN / ES</div>
     <div class="chip">AI teach-back</div>
-    <div class="chip">ED E/M codes 99283–99285</div>
-    <div class="chip">Epic FHIR write-back</div>
+    <div class="chip">ED E/M 99283&ndash;99285</div>
     <div class="chip">~$432/encounter</div>
   </div>
 </div>
 
-<div class="patient-bar">
-  <div class="pb-item"><div class="pb-label">Patient</div><div class="pb-val">Rosa Mendez, 71F</div></div>
-  <div class="pb-item"><div class="pb-label">Chief complaint</div><div class="pb-val">Shortness of breath × 2 days</div></div>
-  <div class="pb-item"><div class="pb-label">Setting</div><div class="pb-val">Eisenhower ED — triage bay</div></div>
-  <div class="pb-item"><div class="pb-label">Insurance</div><div class="pb-val">Medicare FFS</div></div>
-  <div class="pb-item"><div class="pb-label">Diagnoses</div><div class="pb-val">CHF (EF 35%) · DM Type 2</div></div>
-  <div class="pb-item"><div class="pb-label">Income</div><div class="pb-val">SSI + SS ~$1,400/mo</div></div>
+<div class="pbar">
+  <div><div class="pl">Patient</div><div class="pv">Rosa Mendez, 71F</div></div>
+  <div><div class="pl">Chief complaint</div><div class="pv">Shortness of breath &times; 2 days</div></div>
+  <div><div class="pl">Setting</div><div class="pv">Eisenhower ED &mdash; triage bay</div></div>
+  <div><div class="pl">Insurance</div><div class="pv">Medicare FFS</div></div>
+  <div><div class="pl">Diagnoses</div><div class="pv">CHF (EF 35%) &middot; DM Type 2</div></div>
+  <div><div class="pl">Income</div><div class="pv">SSI + SS ~$1,400/mo</div></div>
 </div>
 
-<div class="stage-bar" id="stage-bar">
+<div class="stages">
   <div class="stage" id="st-welcome">Welcome</div>
-  <div class="stage" id="st-food">Food screen</div>
+  <div class="stage" id="st-food">Food</div>
   <div class="stage" id="st-housing">Housing</div>
   <div class="stage" id="st-transport">Transport</div>
   <div class="stage" id="st-urgency">Urgency</div>
@@ -208,315 +195,445 @@ footer strong{color:rgba(255,255,255,.85)}
   <div class="stage" id="st-epic">Epic</div>
 </div>
 
-<div class="sim-body">
-  <div class="main-grid">
+<div class="body">
+  <div class="grid">
     <div>
-      <div class="tablet-wrap">
-        <div class="tablet-chrome">
+      <div class="tablet">
+        <div class="chrome">
           <span class="app-name">Canopy Navigator</span>
-          <span class="step-label" id="prog-lbl">Step 1 of 16</span>
+          <div class="chrome-r">
+            <div class="ltrow">
+              <button class="ltbtn on" id="lt-en" onclick="setLang('en')">EN</button>
+              <button class="ltbtn"    id="lt-es" onclick="setLang('es')">ES</button>
+            </div>
+            <span class="prog-lbl" id="prog-lbl">Step 1 of 16</span>
+          </div>
         </div>
-        <div class="progress-track"><div class="progress-fill" id="prog-bar" style="width:6%"></div></div>
+        <div class="ptrack"><div class="pfill" id="pfill" style="width:6%"></div></div>
         <div class="screen" id="screen"></div>
       </div>
-      <div class="annotation" id="annotation"></div>
+      <div class="ann" id="ann"></div>
     </div>
-    <div class="event-panel">
-      <div class="event-header">Live system events</div>
-      <div class="event-list" id="eventlog"></div>
+    <div class="evpanel">
+      <div class="evhdr">Live system events</div>
+      <div id="evlog"></div>
     </div>
   </div>
 
-  <div class="nav-controls">
-    <button class="nav-btn" id="prevBtn" onclick="navigate(-1)" disabled>← Prev</button>
-    <div class="step-info">
-      <div class="step-num" id="step-num">1 / 16</div>
-      <div class="step-name" id="step-name">Welcome</div>
-      <div class="dots-row" id="dots"></div>
+  <div class="nav-ctrl">
+    <button class="nbtn" id="prevBtn" onclick="navigate(-1)" disabled>&larr; Prev</button>
+    <div class="sinfo">
+      <div class="snum2" id="snum">1 / 16</div>
+      <div class="sname" id="sname">Welcome</div>
+      <div class="dots" id="dots"></div>
     </div>
-    <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Next →</button>
+    <button class="nbtn" id="nextBtn" onclick="navigate(1)">Next &rarr;</button>
   </div>
 </div>
 
 <footer>
-  <strong>Canopy Navigator</strong> · Eisenhower Health Emergency Department Pilot · Rancho Mirage, CA · 2026<br>
-  <span style="margin-top:4px;display:block">This simulation is for demonstration and stakeholder review purposes. All patient data is fictional.</span>
+  <strong>Canopy Navigator</strong> &middot; Eisenhower Health ED Pilot &middot; Rancho Mirage, CA &middot; 2026<br>
+  <span style="margin-top:4px;display:block">Demonstration only &mdash; all patient data is fictional.</span>
 </footer>
 
 <script>
-const STEPS=[
-{stage:"welcome",name:"Welcome",
-screen:`<div style="text-align:center;padding:1rem .5rem">
-  <div class="welcome-icon">👋</div>
-  <div class="screen-title">Hello, Rosa!<br><small style="font-size:12px;font-weight:400;color:#888">Hola, Rosa</small></div>
-  <p class="screen-sub">While you wait, we'd like to ask a few questions to make sure your care team understands your full situation.<br><br>This takes about 3–5 minutes and helps your team today.</p>
-</div>
-<div class="lang-row"><div class="lang-btn sel">English</div><div class="lang-btn">Español</div></div>
-<p style="font-size:10px;color:#999;text-align:center;margin-top:.5rem">Your answers go directly to your care team and are kept private.</p>`,
-events:[{t:"info",l:"session",x:"ED triage session started · Tablet linked to open Epic encounter via SMART on FHIR token · Language: English · ED pod: Bay 4"}],
-note:`<div class="at">T2 — ED Triage touchpoint</div><strong>The nurse hands Rosa a tablet in the triage bay.</strong> The Navigator app opens automatically linked to her open Epic ED encounter via a SMART on FHIR session token — no staff data entry needed. Language preference is recorded here and governs all subsequent content. The session clock starts immediately.`},
+var lang = 'en', cur = 0, allEv = [];
 
-{stage:"food",name:"Food Q1",
-screen:`<div class="loinc-tag lt-food">Hunger Vital Sign · Q1 · LOINC 88122-7</div>
-<p class="screen-title">In the past 12 months, we worried whether our food would run out before we got money to buy more.</p>
-<p class="screen-sub">Choose the answer that best describes your household:</p>
-<div class="opts">
-  <div class="opt sel-ok">Never true</div>
-  <div class="opt sel-ok">Sometimes true</div>
-  <div class="opt sel">Often true ✓</div>
-</div>
-<p style="font-size:10px;color:#999;margin-top:.5rem">This is a question we ask everyone.</p>`,
-events:[{t:"info",l:"screen",x:"Hunger Vital Sign Q1 administered (LOINC 88122-7)"},{t:"trigger",l:"response",x:`food_q1 = "Often true" · LOINC 88122-7 captured · Z59.41 flag: PENDING (waiting for Q2 confirmation)`}],
-note:`<strong>Hunger Vital Sign Q1 (LOINC 88122-7).</strong> Rosa selects "Often true." The app captures the discrete LOINC-coded value but waits for Q2 before generating the Z59.41 flag — both questions must be positive for a validated Hunger Vital Sign positive screen. A single-question positive is not sufficient.`},
+/* ── Steps: each has en/es content, events, note ─────────────────────────── */
+var S = [
 
-{stage:"food",name:"Food Q2",
-screen:`<div class="loinc-tag lt-food">Hunger Vital Sign · Q2 · LOINC 88123-5</div>
-<p class="screen-title">In the past 12 months, the food we bought just didn't last and we didn't have money to get more.</p>
-<div class="opts">
-  <div class="opt sel-ok">Never true</div>
-  <div class="opt sel-ok">Sometimes true</div>
-  <div class="opt sel">Often true ✓</div>
-</div>`,
-events:[{t:"trigger",l:"LOINC coded",x:`food_q2 = "Often true" · LOINC 88123-5 captured`},{t:"mod",l:"Z-CODE FIRED",x:"⚡ Z59.41 Food insecurity → GENERATED · Both HVS questions positive · Unconfirmed Condition resource written to session payload"},{t:"trigger",l:"96160 initiated",x:`96160 doc payload started: tool="Hunger Vital Sign" · date=[timestamp] · Q1="Often true" · Q2="Often true"`}],
-note:`<strong>Both HVS questions positive → Z59.41 auto-generated.</strong> The app writes Z59.41 as an unconfirmed Condition resource. In Epic, this appears as a one-click BestPractice Advisory for the attending. It simultaneously enables: 96160 documentation, E/M MDM complexity support toward 99285, and the HEDIS SNS-E food screening numerator. Food deep-dive branch (MOD-03) is now queued.`},
+/* 1 Welcome */
+{g:'welcome', name:'Welcome',
+en:'<div style="text-align:center;padding:1rem .5rem">' +
+   '<div class="w-icon">&#128075;</div>' +
+   '<div class="stitle">Hello, Rosa!<br><small style="font-size:12px;font-weight:400;color:#888">Hola, Rosa</small></div>' +
+   '<p class="ssub">While you wait, we\'d like to ask a few quick questions so your care team can help you better today. This takes about 3&ndash;5 minutes.</p>' +
+   '</div>' +
+   '<div class="lang-row">' +
+   '<div class="lang-btn sel" data-lang="en">English</div>' +
+   '<div class="lang-btn" data-lang="es">Espa&ntilde;ol</div>' +
+   '</div>' +
+   '<p style="font-size:10px;color:#999;text-align:center;margin-top:.5rem">Your answers go directly to your care team and are kept private.</p>',
+es:'<div style="text-align:center;padding:1rem .5rem">' +
+   '<div class="w-icon">&#128075;</div>' +
+   '<div class="stitle">&#161;Hola, Rosa!<br><small style="font-size:12px;font-weight:400;color:#888">Hello, Rosa</small></div>' +
+   '<p class="ssub">Mientras espera, nos gustar&iacute;a hacerle unas preguntas r&aacute;pidas para que su equipo de atenci&oacute;n pueda ayudarle mejor hoy. Toma aproximadamente 3&ndash;5 minutos.</p>' +
+   '</div>' +
+   '<div class="lang-row">' +
+   '<div class="lang-btn" data-lang="en">English</div>' +
+   '<div class="lang-btn sel" data-lang="es">Espa&ntilde;ol</div>' +
+   '</div>' +
+   '<p style="font-size:10px;color:#999;text-align:center;margin-top:.5rem">Sus respuestas van directamente a su equipo de atenci&oacute;n y se mantienen privadas.</p>',
+ev:[{t:'info',l:'session',x:'ED triage session started &middot; Tablet linked to open Epic encounter via SMART on FHIR token &middot; Language preference recorded &middot; ED pod: Bay 4'}],
+note:'<div class="at">T2 &mdash; ED Triage touchpoint</div><strong>The nurse hands Rosa a tablet in the triage bay.</strong> The app auto-links to her open Epic encounter. Language preference governs all subsequent content. Toggle EN/ES anytime using the header buttons or the buttons on this screen.'},
 
-{stage:"housing",name:"Housing",
-screen:`<div class="loinc-tag lt-neutral">AHC HRSN · Housing · Q3</div>
-<p class="screen-title">Are you worried that in the next 2 months you may not have stable housing?</p>
-<div class="opts">
-  <div class="opt sel">No, I'm not worried ✓</div>
-  <div class="opt sel-ok">Yes, a little worried</div>
-  <div class="opt sel-ok">Yes, very worried</div>
-</div>
-<p style="font-size:10px;color:#999;margin-top:.4rem">Question 3 of 7</p>`,
-events:[{t:"info",l:"response",x:`housing_stability = "Not worried" · No Z59.81x flag · Housing deep-dive branch: SKIPPED`}],
-note:`<strong>Negative housing screen — branch skipped.</strong> Rosa's housing is stable. The response is still LOINC-coded for completeness but no flag or branch is triggered. The app continues immediately to the next domain.`},
+/* 2 Food Q1 */
+{g:'food', name:'Food Q1',
+en:'<div class="loinc-tag lt-food">Hunger Vital Sign &middot; Q1 &middot; LOINC 88122-7</div>' +
+   '<p class="stitle">In the past 12 months, did you worry that your food would run out before you had money to buy more?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">Yes &#10003;</div></div>' +
+   '<p style="font-size:10px;color:#999;margin-top:.5rem">This is a question we ask everyone. &nbsp; Question 1 of 7</p>',
+es:'<div class="loinc-tag lt-food">Hunger Vital Sign &middot; Pregunta 1 &middot; LOINC 88122-7</div>' +
+   '<p class="stitle">En los &uacute;ltimos 12 meses, &iquest;le preocup&oacute; que la comida se acabara antes de tener dinero para comprar m&aacute;s?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">S&iacute; &#10003;</div></div>' +
+   '<p style="font-size:10px;color:#999;margin-top:.5rem">Esta es una pregunta que le hacemos a todos. &nbsp; Pregunta 1 de 7</p>',
+ev:[{t:'info',l:'screen',x:'Hunger Vital Sign Q1 administered (LOINC 88122-7)'},{t:'trigger',l:'response',x:'food_q1 = Yes &middot; LOINC 88122-7 captured &middot; Z59.41 flag: PENDING (waiting for Q2)'}],
+note:'<strong>Hunger Vital Sign Q1 (LOINC 88122-7).</strong> Rosa selects Yes. The app captures the discrete LOINC-coded value but holds the Z59.41 flag until Q2 is also positive &mdash; both questions must be positive for a validated HVS screen.'},
 
-{stage:"transport",name:"Transport",
-screen:`<div class="loinc-tag lt-transport">AHC HRSN · Transportation · Q5</div>
-<p class="screen-title">In the past 12 months, has lack of reliable transportation kept you from medical appointments, meetings, work, or from getting things needed for daily living?</p>
-<div class="opts">
-  <div class="opt sel-ok">No</div>
-  <div class="opt sel">Yes ✓</div>
-</div>`,
-events:[{t:"trigger",l:"response",x:`transport_q5 = "Yes" · AHC HRSN Q5 positive`},{t:"mod",l:"Z-CODE FIRED",x:"⚡ Z59.82 Transportation insecurity → GENERATED · Unconfirmed Condition resource written"},{t:"info",l:"branch queued",x:"Transport deep-dive branch (MOD-03) queued — runs after core 7-question screen completes · Active Z-code flags: Z59.41 + Z59.82"}],
-note:`<strong>Second positive domain — Z59.82 auto-generated.</strong> The app now holds two Z-code flags. The transport deep-dive branch is queued but not launched yet — all 7 core questions complete first. This design keeps the primary intake flow short and only adds deep-dives after core completion.`},
+/* 3 Food Q2 */
+{g:'food', name:'Food Q2',
+en:'<div class="loinc-tag lt-food">Hunger Vital Sign &middot; Q2 &middot; LOINC 88123-5</div>' +
+   '<p class="stitle">In the past 12 months, did the food you bought run out before you had money to buy more?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">Yes &#10003;</div></div>' +
+   '<p style="font-size:10px;color:#999;margin-top:.5rem">Question 2 of 7</p>',
+es:'<div class="loinc-tag lt-food">Hunger Vital Sign &middot; Pregunta 2 &middot; LOINC 88123-5</div>' +
+   '<p class="stitle">En los &uacute;ltimos 12 meses, &iquest;se acab&oacute; la comida que compr&oacute; antes de tener dinero para comprar m&aacute;s?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">S&iacute; &#10003;</div></div>' +
+   '<p style="font-size:10px;color:#999;margin-top:.5rem">Pregunta 2 de 7</p>',
+ev:[{t:'trigger',l:'LOINC coded',x:'food_q2 = Yes &middot; LOINC 88123-5 captured'},{t:'mod',l:'Z-CODE FIRED',x:'&#9889; Z59.41 Food insecurity &rarr; GENERATED &middot; Both HVS questions positive &middot; Unconfirmed Condition resource written to Epic payload'},{t:'trigger',l:'96160 initiated',x:'96160 doc: tool=&ldquo;Hunger Vital Sign&rdquo; &middot; Q1=Yes &middot; Q2=Yes &middot; date=[timestamp]'}],
+note:'<strong>Both HVS questions positive &rarr; Z59.41 auto-generated.</strong> Simultaneously enables: 96160 billing documentation, E/M MDM complexity support toward 99285, and the HEDIS SNS-E food screening numerator. Food deep-dive branch (MOD-03) queued.'},
 
-{stage:"urgency",name:"Urgency + Utilities",
-screen:`<div class="loinc-tag lt-neutral">AHC HRSN · Utilities + Financial</div>
-<p class="screen-title" style="font-size:13px">Has anyone threatened to shut off your utilities in the past 12 months?</p>
-<div class="opts" style="gap:5px"><div class="opt sel">Yes ✓</div><div class="opt sel-ok">No</div></div>
-<div style="border-top:1px solid #eee;padding-top:.5rem;margin-top:.5rem">
-  <p class="screen-title" style="font-size:13px">Do you ever need help paying for things like medicine, food, or bills?</p>
-  <div class="opts" style="gap:5px"><div class="opt sel">Yes ✓</div><div class="opt sel-ok">No</div></div>
-</div>
-<p style="font-size:10px;color:#999;margin-top:.4rem">Safety question is next →</p>`,
-events:[{t:"trigger",l:"utilities",x:"utilities_response = Yes · Z59.12 flag generated"},{t:"trigger",l:"financial",x:"financial_response = Yes · Z59.861 flag generated (FY2026)"},{t:"mod",l:"multi-domain",x:"⚠ 4 positive SDOH domains (food + transport + utilities + financial) · MULTI_DOMAIN_POSITIVE alert queued → ED case manager after screen completion"}],
-note:`<strong>4 positive SDOH domains — multi-domain threshold crossed.</strong> Rosa now has flags in four domains. The MULTI_DOMAIN_POSITIVE moderate alert will fire for the ED case manager after screen completion, prompting assessment for complex care management enrollment. Safety question (IPV) fires last — negative result allows normal discharge planning.`},
+/* 4 Housing */
+{g:'housing', name:'Housing',
+en:'<div class="loinc-tag lt-neutral">AHC HRSN &middot; Housing &middot; Q3</div>' +
+   '<p class="stitle">Are you worried that in the next 2 months you may not have stable housing?</p>' +
+   '<div class="yn"><div class="yn-btn yn-yes yn-no">No &#10003;</div><div class="yn-btn yn-no">Yes</div></div>' +
+   '<p style="font-size:10px;color:#999;margin-top:.5rem">Question 3 of 7</p>',
+es:'<div class="loinc-tag lt-neutral">AHC HRSN &middot; Vivienda &middot; Pregunta 3</div>' +
+   '<p class="stitle">&iquest;Le preocupa que en los pr&oacute;ximos 2 meses no tenga una vivienda estable?</p>' +
+   '<div class="yn"><div class="yn-btn yn-yes yn-no">No &#10003;</div><div class="yn-btn yn-no">S&iacute;</div></div>' +
+   '<p style="font-size:10px;color:#999;margin-top:.5rem">Pregunta 3 de 7</p>',
+ev:[{t:'info',l:'response',x:'housing_stability = No (not worried) &middot; No Z59.81x flag &middot; Housing deep-dive branch: SKIPPED'}],
+note:'<strong>Negative housing screen &mdash; branch skipped.</strong> Rosa is not worried about housing. The response is still LOINC-coded for completeness but no flag or branch is triggered. The app continues to the next domain.'},
 
-{stage:"urgency",name:"Urgency Q",
-screen:`<div style="background:#FEF2F2;border:1.5px solid #DC2626;border-radius:10px;padding:.6rem .8rem;margin-bottom:.65rem">
-  <p style="font-size:11px;font-weight:600;color:#991B1B">⚠ One more question before the care team sees you:</p>
-</div>
-<p class="screen-title">Do you have enough food at home for today and tonight?</p>
-<div class="opts">
-  <div class="opt sel-ok">Yes, I have enough for today</div>
-  <div class="opt sel-danger">No, I don't have enough food for today ✓</div>
-</div>`,
-events:[{t:"high",l:"HIGH ALERT FIRED",x:"🚨 urgency_flag = true · 'No food today' · HIGH alert → ED charge nurse + ED case manager queue · Do NOT discharge without CHW food intervention"},{t:"trigger",l:"help preference",x:`help_preference = "Yes, I'd like help" → CHW auto-assigned · G0019 time log started automatically`}],
-note:`<strong>Urgency flag — highest clinical priority in the system.</strong> This is the only Navigator event that can generate a discharge hold recommendation. In the ED, the alert reaches the charge nurse and case manager within seconds. The G0019 Community Health Integration time log starts automatically the moment the CHW is assigned — every subsequent minute of CHW contact counts toward the 60-min monthly billing threshold.`},
+/* 5 Transport */
+{g:'transport', name:'Transport',
+en:'<div class="loinc-tag lt-transport">AHC HRSN &middot; Transportation &middot; Q5</div>' +
+   '<p class="stitle">In the past 12 months, did lack of reliable transportation keep you from medical appointments or from getting things needed for daily living?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">Yes &#10003;</div></div>' +
+   '<p style="font-size:10px;color:#999;margin-top:.5rem">Question 5 of 7</p>',
+es:'<div class="loinc-tag lt-transport">AHC HRSN &middot; Transporte &middot; Pregunta 5</div>' +
+   '<p class="stitle">En los &uacute;ltimos 12 meses, &iquest;la falta de transporte confiable le impidi&oacute; ir a citas m&eacute;dicas o hacer cosas necesarias para la vida diaria?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">S&iacute; &#10003;</div></div>' +
+   '<p style="font-size:10px;color:#999;margin-top:.5rem">Pregunta 5 de 7</p>',
+ev:[{t:'trigger',l:'response',x:'transport_q5 = Yes &middot; AHC HRSN Q5 positive'},{t:'mod',l:'Z-CODE FIRED',x:'&#9889; Z59.82 Transportation insecurity &rarr; GENERATED &middot; Unconfirmed Condition resource written'},{t:'info',l:'branch queued',x:'Transport deep-dive branch (MOD-03) queued &middot; Active Z-code flags: Z59.41 + Z59.82'}],
+note:'<strong>Second positive domain &mdash; Z59.82 auto-generated.</strong> Transport deep-dive branch queued but not yet launched &mdash; all 7 core questions complete first. This keeps the primary intake short.'},
 
-{stage:"deepdive",name:"Food branch",
-screen:`<div class="loinc-tag lt-food">Food deep-dive · MOD-03</div>
-<p class="screen-title" style="font-size:13px">A few more questions about food:</p>
-<p class="screen-sub" style="font-size:11px">How often does your food run out before end of month?</p>
-<div class="scale-row">
-  <div class="scale-btn">Rarely</div>
-  <div class="scale-btn">Sometimes</div>
-  <div class="scale-btn sel">Most months ✓</div>
-  <div class="scale-btn">Every month</div>
-</div>
-<p class="screen-sub" style="font-size:11px;margin-top:.5rem">What makes getting food hardest right now?</p>
-<div class="opts" style="gap:5px">
-  <div class="opt sel" style="font-size:11px">Fixed income / benefits don't stretch far enough ✓</div>
-  <div class="opt sel-ok" style="font-size:11px">Hard to get to grocery store</div>
-  <div class="opt sel-ok" style="font-size:11px">Health problems affect eating</div>
-</div>`,
-events:[{t:"trigger",l:"food deep-dive",x:`Frequency: "Most months" · Barrier: "Fixed income" · Z59.41 specificity documented`},{t:"info",l:"MDM narrative",x:`Generated: "Food insecurity driven by fixed income; runs out most months — directly limits DM medication co-pay budget and meal-medication timing"`}],
-note:`<strong>Deep-dive branch (MOD-03) — food domain.</strong> The 3-question follow-up refines Z59.41 documentation. "Fixed income" barrier feeds the auto-generated MDM narrative in Epic. This is what gives the ED attending the specific clinical linkage language needed to justify the E/M code upgrade. Without this narrative, the Z code alone is insufficient for MDM complexity documentation.`},
+/* 6 Utilities + Financial */
+{g:'urgency', name:'Utilities + Financial',
+en:'<div class="loinc-tag lt-neutral">AHC HRSN &middot; Utilities + Financial &middot; Q4 &amp; Q6</div>' +
+   '<p class="stitle">In the past 12 months, did anyone threaten to shut off your utilities (electricity, gas, water)?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">Yes &#10003;</div></div>' +
+   '<div class="q-divider">' +
+   '<p class="stitle">Do you ever need help paying for medicine, food, or bills?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">Yes &#10003;</div></div>' +
+   '</div>' +
+   '<p style="font-size:10px;color:#999;margin-top:.4rem">Questions 4 &amp; 6 of 7 &middot; Safety question follows &rarr;</p>',
+es:'<div class="loinc-tag lt-neutral">AHC HRSN &middot; Servicios + Finanzas &middot; P4 &amp; P6</div>' +
+   '<p class="stitle">En los &uacute;ltimos 12 meses, &iquest;alguien amena&zeta;&oacute; con cortar su electricidad, gas o agua?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">S&iacute; &#10003;</div></div>' +
+   '<div class="q-divider">' +
+   '<p class="stitle">&iquest;Necesita ayuda para pagar medicamentos, comida o facturas?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">S&iacute; &#10003;</div></div>' +
+   '</div>' +
+   '<p style="font-size:10px;color:#999;margin-top:.4rem">Preguntas 4 y 6 de 7 &middot; Pregunta de seguridad sigue &rarr;</p>',
+ev:[{t:'trigger',l:'utilities',x:'utilities_response = Yes &middot; Z59.12 flag generated'},{t:'trigger',l:'financial',x:'financial_response = Yes &middot; Z59.861 flag generated (FY2026)'},{t:'mod',l:'multi-domain',x:'&#9888; 4 positive SDOH domains (food + transport + utilities + financial) &middot; MULTI_DOMAIN_POSITIVE alert queued &rarr; ED case manager'}],
+note:'<strong>4 positive SDOH domains &mdash; multi-domain threshold crossed.</strong> MULTI_DOMAIN_POSITIVE moderate alert queues for the ED case manager, prompting assessment for complex care management. Safety question (IPV) fires last; negative allows normal discharge planning.'},
 
-{stage:"deepdive",name:"Transport branch",
-screen:`<div class="loinc-tag lt-transport">Transport deep-dive · MOD-03</div>
-<p class="screen-title" style="font-size:13px">A few more questions about getting around:</p>
-<p class="screen-sub" style="font-size:11px">Last time you missed a medical appointment because of transportation?</p>
-<div class="opts" style="gap:5px">
-  <div class="opt sel-ok" style="font-size:11px">Never / rarely</div>
-  <div class="opt sel" style="font-size:11px">In the past 2–4 weeks ✓</div>
-  <div class="opt sel-ok" style="font-size:11px">More than a month ago</div>
-</div>
-<p class="screen-sub" style="font-size:11px;margin-top:.5rem">Do you have an upcoming appointment in the next 2 weeks?</p>
-<div class="opts" style="gap:5px">
-  <div class="opt sel" style="font-size:11px">Yes — cardiology in 8 days ✓</div>
-  <div class="opt sel-ok" style="font-size:11px">No upcoming appointments</div>
-</div>`,
-events:[{t:"mod",l:"MODERATE ALERT",x:"⚠ TRANSPORT_POSITIVE + upcoming_followup == true → ED case manager: convert cardiology appt (8 days) to telehealth OR arrange NEMT before discharge"},{t:"trigger",l:"transport MDM",x:`MDM narrative: "Transportation insecurity with missed cardiology visit 2–4 wks ago; upcoming appointment in 8 days — telehealth conversion required"`}],
-note:`<strong>Upcoming appointment + active transport barrier = MODERATE alert.</strong> The combination of a near-term cardiology follow-up (8 days) and a confirmed transport barrier is the highest-value transport intervention point in the ED. The care coordinator is prompted to either convert the appointment to telehealth or arrange NEMT before Rosa leaves. This referral also satisfies the HEDIS SNS-E 30-day transport intervention requirement from today's visit.`},
+/* 7 Urgency */
+{g:'urgency', name:'Urgency',
+en:'<div class="urg-box"><p>&#9888; One more question before the care team sees you:</p></div>' +
+   '<p class="stitle">Do you have enough food at home for today and tonight?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No &#10003;</div><div class="yn-btn yn-yes yn-no">Yes</div></div>' +
+   '<p style="font-size:10px;color:#999;margin-top:.5rem">Your honest answer helps your care team help you today.</p>',
+es:'<div class="urg-box"><p>&#9888; Una pregunta m&aacute;s antes de que el equipo le atienda:</p></div>' +
+   '<p class="stitle">&iquest;Tiene suficiente comida en casa para hoy y esta noche?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No &#10003;</div><div class="yn-btn yn-yes yn-no">S&iacute;</div></div>' +
+   '<p style="font-size:10px;color:#999;margin-top:.5rem">Su respuesta honesta ayuda a su equipo a ayudarle hoy.</p>',
+ev:[{t:'high',l:'HIGH ALERT FIRED',x:'&#128680; urgency_flag = true &middot; &ldquo;No food today&rdquo; &middot; HIGH alert &rarr; ED charge nurse + ED case manager queue &middot; Do NOT discharge without CHW food intervention'},{t:'trigger',l:'help preference',x:'help_preference = Yes &rarr; CHW auto-assigned &middot; G0019 time log started automatically'}],
+note:'<strong>Urgency flag &mdash; highest clinical priority in the system.</strong> This is the only Navigator event that can generate a discharge hold recommendation. The G0019 Community Health Integration time log starts the moment the CHW is assigned &mdash; every minute of CHW contact counts toward the 60-min monthly billing threshold.'},
 
-{stage:"teachback",name:"Education",
-screen:`<div class="thank-box"><p>✓ Thank you, Rosa — your care team has been notified.</p><span>A community health worker will see you before you leave.</span></div>
-<p class="screen-title" style="font-size:13px">Your care team assigned two short education topics:</p>
-<div class="edu-doc"><h5>Heart failure: staying well at home</h5><p>Warning signs · When to call · Daily weigh-ins · Low-sodium diet tips</p></div>
-<div class="edu-doc"><h5>Food support resources — Coachella Valley</h5><p>SNAP · Desert ARC Food Bank · Community pantries · Call 2-1-1 anytime</p></div>
-<p style="font-size:10px;color:#999;margin-top:.5rem">Please read these, then answer 3 quick questions. →</p>`,
-events:[{t:"info",l:"MOD-06 assigned",x:"Teach-back assigned by ED case manager via Canopy Connect · Docs: CHF self-care + food support resources"},{t:"info",l:"G0019 running",x:"CHW time log active · Activity: pre-discharge SDOH navigation — food + transport referral · Cumulative: 23 min"}],
-note:`<strong>T6 — Patient education touchpoint.</strong> The teach-back module was assigned when the HIGH urgency alert fired, automatically queuing it to Rosa's tablet. Two domain-specific education documents are served — matched to her positive screens. The CHW time log is running in the background. All CHW contact time from this moment is captured against the G0019 60-min monthly threshold.`},
+/* 8 Food deep-dive */
+{g:'deepdive', name:'Food deep-dive',
+en:'<div class="loinc-tag lt-food">Food deep-dive &middot; MOD-03</div>' +
+   '<p class="stitle">Does your food usually run out before the end of the month?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">Yes &#10003;</div></div>' +
+   '<div class="q-divider">' +
+   '<p class="stitle">Is the main reason a fixed income or limited budget?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">Yes &#10003;</div></div>' +
+   '</div>',
+es:'<div class="loinc-tag lt-food">Preguntas adicionales &middot; Comida</div>' +
+   '<p class="stitle">&iquest;Generalmente se le acaba la comida antes de fin de mes?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">S&iacute; &#10003;</div></div>' +
+   '<div class="q-divider">' +
+   '<p class="stitle">&iquest;Es la raz&oacute;n principal un ingreso fijo o presupuesto limitado?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">S&iacute; &#10003;</div></div>' +
+   '</div>',
+ev:[{t:'trigger',l:'food deep-dive',x:'food_runs_out_monthly = Yes &middot; barrier = fixed_income &middot; Z59.41 specificity upgraded'},{t:'info',l:'MDM narrative',x:'Generated: &ldquo;Food insecurity driven by fixed income; runs out before month end &mdash; limits DM medication co-pay budget and meal-medication timing&rdquo;'}],
+note:'<strong>Deep-dive branch (MOD-03) &mdash; food domain.</strong> Binary follow-up questions refine Z59.41 specificity and generate the MDM complexity narrative that the ED attending needs to justify the E/M code upgrade. Without this narrative, the Z code alone is insufficient for MDM documentation.'},
 
-{stage:"teachback",name:"Teach-back Q1",
-screen:`<div class="chat-area">
-  <div class="chat-group"><div class="chat-label">Navigator AI</div>
-  <div class="bubble bubble-ai">In your own words — <strong>what should you do if you start feeling more short of breath at home?</strong></div></div>
-  <div class="chat-group" style="align-items:flex-end"><div class="chat-label right">Rosa</div>
-  <div class="bubble bubble-pt">"I should call the doctor or go to the hospital if I feel more short of breath. Also if I gain more than 2 pounds overnight."</div></div>
-  <div class="grade-pill grade-pass">✓ Pass — "call doctor / hospital" + "2-lb weight gain threshold" both present</div>
-</div>`,
-events:[{t:"success",l:"Q1 PASS",x:"CHF warning signs comprehension: PASS · Response contains call doctor + hospital + weight gain threshold · Running score: 1/1"}],
-note:`<strong>AI teach-back Q1 — CHF warning signs.</strong> The AI evaluates Rosa's free-text response against required semantic elements — not an exact string match. "Call the doctor or go to the hospital" satisfies the emergency escalation element. Mentioning the 2-lb weight gain threshold satisfies the CHF-specific monitoring element. Pass. Running score: 1/1.`},
+/* 9 Transport deep-dive */
+{g:'deepdive', name:'Transport deep-dive',
+en:'<div class="loinc-tag lt-transport">Transport deep-dive &middot; MOD-03</div>' +
+   '<p class="stitle">Have you missed a medical appointment in the past month because of transportation?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">Yes &#10003;</div></div>' +
+   '<div class="q-divider">' +
+   '<p class="stitle">Do you have a medical appointment coming up in the next 2 weeks?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">Yes &#10003;</div></div>' +
+   '</div>',
+es:'<div class="loinc-tag lt-transport">Preguntas adicionales &middot; Transporte</div>' +
+   '<p class="stitle">&iquest;Ha perdido alguna cita m&eacute;dica en el &uacute;ltimo mes por falta de transporte?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">S&iacute; &#10003;</div></div>' +
+   '<div class="q-divider">' +
+   '<p class="stitle">&iquest;Tiene una pr&oacute;xima cita m&eacute;dica en las pr&oacute;ximas 2 semanas?</p>' +
+   '<div class="yn"><div class="yn-btn yn-no">No</div><div class="yn-btn yn-yes">S&iacute; &#10003;</div></div>' +
+   '</div>',
+ev:[{t:'mod',l:'MODERATE ALERT',x:'&#9888; missed_appt = Yes + upcoming_appt = Yes &middot; Alert &rarr; ED case manager: convert cardiology appt (8 days) to telehealth OR arrange NEMT before discharge'},{t:'trigger',l:'transport MDM',x:'MDM narrative: &ldquo;Missed medical appointment last month; upcoming appointment in 8 days &mdash; telehealth conversion required&rdquo;'}],
+note:'<strong>Upcoming appointment + active transport barrier = MODERATE alert.</strong> The care coordinator must either convert the upcoming appointment to telehealth or arrange NEMT before Rosa leaves. This referral also satisfies the HEDIS SNS-E 30-day transport intervention requirement from today&rsquo;s visit.'},
 
-{stage:"teachback",name:"Teach-back Q2",
-screen:`<div class="chat-area">
-  <div class="chat-group"><div class="chat-label">Navigator AI</div>
-  <div class="bubble bubble-ai"><strong>If your food runs out before end of month, what is one thing you could do?</strong></div></div>
-  <div class="chat-group" style="align-items:flex-end"><div class="chat-label right">Rosa</div>
-  <div class="bubble bubble-pt">"I could go to the food bank, or maybe apply for SNAP."</div></div>
-  <div class="grade-pill grade-pass">✓ Pass — names two specific resources (food bank + SNAP)</div>
-</div>`,
-events:[{t:"success",l:"Q2 PASS",x:"Food resources comprehension: PASS · Names 2 specific resources · Running score: 2/2"}],
-note:`<strong>AI teach-back Q2 — food resources.</strong> Pass threshold: at least one named specific resource — not vague language like "there might be help." Rosa names both a food bank and SNAP. Running score: 2/2.`},
+/* 10 Education */
+{g:'teachback', name:'Education',
+en:'<div class="thank-box"><p>&#10003; Thank you, Rosa &mdash; your care team has been notified.</p><span>A community health worker will see you before you leave.</span></div>' +
+   '<p class="stitle" style="font-size:13px">Your care team assigned two short education topics:</p>' +
+   '<div class="edu-doc"><h5>Heart failure: staying well at home</h5><p>Warning signs &middot; When to call &middot; Daily weigh-ins &middot; Low-sodium diet tips</p></div>' +
+   '<div class="edu-doc"><h5>Food support resources &mdash; Coachella Valley</h5><p>SNAP &middot; Desert ARC Food Bank &middot; Community pantries &middot; Call 2-1-1 anytime</p></div>' +
+   '<p style="font-size:10px;color:#999;margin-top:.5rem">Please read these, then answer 3 quick questions. &rarr;</p>',
+es:'<div class="thank-box"><p>&#10003; Gracias, Rosa &mdash; su equipo de atenci&oacute;n ha sido notificado.</p><span>Un trabajador de salud comunitaria vendr&aacute; a verle antes de irse.</span></div>' +
+   '<p class="stitle" style="font-size:13px">Su equipo le asign&oacute; dos temas cortos de educaci&oacute;n:</p>' +
+   '<div class="edu-doc"><h5>Insuficiencia card&iacute;aca: mantenerse bien en casa</h5><p>Se&ntilde;ales de advertencia &middot; Cu&aacute;ndo llamar &middot; Peso diario &middot; Consejos de dieta baja en sodio</p></div>' +
+   '<div class="edu-doc"><h5>Recursos de apoyo alimentario &mdash; Valle de Coachella</h5><p>SNAP &middot; Banco de alimentos Desert ARC &middot; Despensas comunitarias &middot; Llame al 2-1-1 en cualquier momento</p></div>' +
+   '<p style="font-size:10px;color:#999;margin-top:.5rem">Por favor lea esto, luego responda 3 preguntas r&aacute;pidas. &rarr;</p>',
+ev:[{t:'info',l:'MOD-06 assigned',x:'Teach-back assigned by ED case manager via Canopy Connect &middot; Docs: CHF self-care + food support resources (bilingual)'},{t:'info',l:'G0019 running',x:'CHW time log active &middot; Cumulative: 23 min &middot; 37 min to G0019 billing threshold'}],
+note:'<strong>T6 &mdash; Patient education touchpoint.</strong> Two domain-specific education documents served, matched to Rosa&rsquo;s positive screens. In Spanish mode, both documents are delivered in Spanish. The CHW time log continues running in the background.'},
 
-{stage:"teachback",name:"Teach-back Q3",
-screen:`<div class="chat-area">
-  <div class="chat-group"><div class="chat-label">Navigator AI</div>
-  <div class="bubble bubble-ai"><strong>What phone number would you call to find food help or housing help near your home?</strong></div></div>
-  <div class="chat-group" style="align-items:flex-end"><div class="chat-label right">Rosa</div>
-  <div class="bubble bubble-pt">"I'm not sure… maybe the social worker? I don't remember a number."</div></div>
-  <div class="grade-pill grade-fail">✗ Fail — "2-1-1" not recalled</div>
-  <div class="remediate">Navigator: "The number is <strong>2-1-1</strong>. You can call anytime, 24 hours a day, to find food, housing, and other help near your home."</div>
-</div>`,
-events:[{t:"mod",l:"Q3 FAIL — gap flag",x:"⚠ 2-1-1 recall FAIL · gap_flag: food_resource_211 = true · Care coordinator alert: review 211 before discharge + schedule 48-hr follow-up call"},{t:"info",l:"corrective delivered",x:"Inline corrective response delivered to patient: '2-1-1' number and use explained immediately in app"}],
-note:`<strong>Gap flagged — corrective teach-back delivered inline.</strong> The app doesn't just score the fail — it immediately delivers the correct answer in plain language so Rosa leaves with the information regardless of score. The gap flag triggers (1) a care coordinator notification, (2) a 48-hour post-discharge follow-up call with 211 recall as a specific agenda item, and (3) documentation in the Epic discharge summary.`},
+/* 11 Teach-back Q1 */
+{g:'teachback', name:'Teach-back Q1',
+en:'<div class="chat-area">' +
+   '<div><div class="chat-lbl">Navigator AI</div><div class="bubble b-ai">In your own words &mdash; <strong>what should you do if you start feeling more short of breath at home?</strong></div></div>' +
+   '<div style="align-items:flex-end;display:flex;flex-direction:column"><div class="chat-lbl r">Rosa</div><div class="bubble b-pt">&ldquo;I should call the doctor or go to the hospital if I feel more short of breath. Also if I gain more than 2 pounds overnight.&rdquo;</div></div>' +
+   '<div class="grade g-pass">&#10003; Pass &mdash; &ldquo;call doctor / hospital&rdquo; + &ldquo;2-lb weight gain threshold&rdquo; both present</div>' +
+   '</div>',
+es:'<div class="chat-area">' +
+   '<div><div class="chat-lbl">Navigator AI</div><div class="bubble b-ai">Con sus propias palabras &mdash; <strong>&iquest;qu&eacute; deber&iacute;a hacer si empieza a sentir m&aacute;s falta de aire en casa?</strong></div></div>' +
+   '<div style="align-items:flex-end;display:flex;flex-direction:column"><div class="chat-lbl r">Rosa</div><div class="bubble b-pt">&ldquo;Debo llamar al m&eacute;dico o ir al hospital si siento m&aacute;s dificultad para respirar. Tambi&eacute;n si subo m&aacute;s de 2 libras de un d&iacute;a para otro.&rdquo;</div></div>' +
+   '<div class="grade g-pass">&#10003; Aprobado &mdash; &ldquo;llamar al m&eacute;dico / hospital&rdquo; + &ldquo;umbral de 2 libras&rdquo; presentes</div>' +
+   '</div>',
+ev:[{t:'success',l:'Q1 PASS',x:'CHF warning signs comprehension: PASS &middot; Running score: 1/1'}],
+note:'<strong>AI teach-back Q1 &mdash; CHF warning signs.</strong> The AI evaluates Rosa&rsquo;s free-text response against required semantic elements &mdash; not an exact string match. The same elements are required in English or Spanish. Pass. Running score: 1/1.'},
 
-{stage:"teachback",name:"Score",
-screen:`<div class="score-card">
-  <div><span class="score-num">2</span><span class="score-denom"> / 3</span></div>
-  <div class="score-lbl">comprehension questions correct</div>
-  <div class="score-badge sb-pass">PASS — education complete</div>
-</div>
-<div class="score-rows">
-  <div class="score-row"><span>CHF warning signs (Q1)</span><span class="pass-mark">✓ Pass</span></div>
-  <div class="score-row"><span>Food resources — SNAP / food bank (Q2)</span><span class="pass-mark">✓ Pass</span></div>
-  <div class="score-row"><span>2-1-1 community resource line (Q3)</span><span class="fail-mark">✗ Gap flagged</span></div>
-</div>
-<p style="font-size:10px;color:#888;margin-top:.6rem;line-height:1.4">A community health worker will follow up with you about food support. Your care coordinator will call you within 2 days after you go home.</p>`,
-events:[{t:"success",l:"score written",x:"Comprehension score 2/3 → Epic discharge summary · Gap flags: 211_recall = true · SNOMED CT intervention logged: 410076003 (education)"},{t:"success",l:"SNS-E numerator",x:"HEDIS SNS-E food intervention numerator: MET — education + referral within same visit (well within 30-day window)"}],
-note:`<strong>2/3 = pass. The gap flag is the clinically important output.</strong> The comprehension score plus gap flags are written automatically to the Epic discharge summary. The HEDIS SNS-E education intervention is timestamped — satisfying the 30-day window from today's positive screen. The 48-hour follow-up call from the care coordinator has a documented specific purpose: confirm Rosa can recall and use 2-1-1.`},
+/* 12 Teach-back Q2 */
+{g:'teachback', name:'Teach-back Q2',
+en:'<div class="chat-area">' +
+   '<div><div class="chat-lbl">Navigator AI</div><div class="bubble b-ai"><strong>If your food runs out before the end of the month, what is one thing you could do?</strong></div></div>' +
+   '<div style="align-items:flex-end;display:flex;flex-direction:column"><div class="chat-lbl r">Rosa</div><div class="bubble b-pt">&ldquo;I could go to the food bank, or maybe apply for SNAP.&rdquo;</div></div>' +
+   '<div class="grade g-pass">&#10003; Pass &mdash; names two specific resources (food bank + SNAP)</div>' +
+   '</div>',
+es:'<div class="chat-area">' +
+   '<div><div class="chat-lbl">Navigator AI</div><div class="bubble b-ai"><strong>Si se le acaba la comida antes de fin de mes, &iquest;qu&eacute; podr&iacute;a hacer?</strong></div></div>' +
+   '<div style="align-items:flex-end;display:flex;flex-direction:column"><div class="chat-lbl r">Rosa</div><div class="bubble b-pt">&ldquo;Podr&iacute;a ir al banco de alimentos, o tal vez solicitar los beneficios SNAP.&rdquo;</div></div>' +
+   '<div class="grade g-pass">&#10003; Aprobado &mdash; nombra dos recursos espec&iacute;ficos (banco de alimentos + SNAP)</div>' +
+   '</div>',
+ev:[{t:'success',l:'Q2 PASS',x:'Food resources comprehension: PASS &middot; Running score: 2/2'}],
+note:'<strong>AI teach-back Q2 &mdash; food resources.</strong> Pass threshold: at least one named specific resource. Rosa names both a food bank and SNAP. Running score: 2/2.'},
 
-{stage:"billing",name:"Billing cascade",
-screen:`<p style="font-size:12px;font-weight:700;color:#1a1a1a;margin-bottom:.5rem">Billing codes triggered — this encounter</p>
-<div class="billing-list">
-  <div class="bill-row"><span class="bill-code">96160</span><span class="bill-desc">Health risk assessment (HVS + AHC HRSN). LOINC-coded per-question responses, tool name, date.</span><span class="bill-amt">~$3</span></div>
-  <div class="bill-row"><span class="bill-code">99285</span><span class="bill-desc">ED E/M — high severity (CHF exacerbation). SDOH complexity (Z59.41 + Z59.82) documents additional MDM burden, supporting highest-tier ED code.</span><span class="bill-amt">~$242</span></div>
-  <div class="bill-row"><span class="bill-code">Z59.41</span><span class="bill-desc">Food insecurity secondary Dx. One-click confirm in Epic. Supports MDM. If admitted → potential CC for DRG.</span><span class="bill-amt">MDM</span></div>
-  <div class="bill-row"><span class="bill-code">Z59.82</span><span class="bill-desc">Transportation insecurity secondary Dx. Supports MDM, telehealth justification for cardiology.</span><span class="bill-amt">MDM</span></div>
-  <div class="bill-row"><span class="bill-code">G0019</span><span class="bill-desc">CHI — first 60 min/month. CHW: food referral + SNAP enrollment + transport coordination. Time log running.</span><span class="bill-amt">~$80</span></div>
-  <div class="bill-row"><span class="bill-code">99495</span><span class="bill-desc">TCM — if admitted from ED (highly likely with CHF/dyspnea). F2F within 14 days of discharge.</span><span class="bill-amt">~$201</span></div>
-  <div class="bill-total"><span>ED visit + 30-day CHI</span><span style="color:#166534">~$325</span></div>
-  <div class="bill-total" style="border-top:none;margin-top:-4px;font-size:10px;font-weight:500;color:#555"><span>+ TCM if admitted (likely)</span><span style="color:#166534">+$201</span></div>
-</div>`,
-events:[{t:"trigger",l:"billing queued",x:"96160 payload → Epic billing queue · Z59.41 + Z59.82 suggested secondary Dx queued (physician confirms)"},{t:"info",l:"G0019 status",x:"G0019 time log: 49 min cumulative · 11 min to billing threshold · INFO alert will fire at 55 min"},{t:"success",l:"HEDIS SNS-E",x:"SNS-E screening numerator: MET (LOINC food + transport) · SNS-E intervention numerator: MET (education + referral same visit)"}],
-note:`<strong>ED E/M codes are 99281–99285 — not office 99213–99214.</strong> The MDM SDOH uplift logic is identical, but the code set is different. In the ED, Rosa's CHF exacerbation already supports 99285 (high-severity ED visit, ~$242). The Z-code documentation reinforces MDM complexity and protects the code selection at audit. If Rosa is admitted — which is clinically likely given dyspnea and EF 35% — housing/SDOH Z codes as inpatient secondary diagnoses trigger DRG CC review, potentially adding $1,000–$1,500.`},
+/* 13 Teach-back Q3 */
+{g:'teachback', name:'Teach-back Q3',
+en:'<div class="chat-area">' +
+   '<div><div class="chat-lbl">Navigator AI</div><div class="bubble b-ai"><strong>What phone number would you call to find food help or housing help near your home?</strong></div></div>' +
+   '<div style="align-items:flex-end;display:flex;flex-direction:column"><div class="chat-lbl r">Rosa</div><div class="bubble b-pt">&ldquo;I&rsquo;m not sure&hellip; maybe the social worker? I don&rsquo;t remember a number.&rdquo;</div></div>' +
+   '<div class="grade g-fail">&#10007; Fail &mdash; &ldquo;2-1-1&rdquo; not recalled</div>' +
+   '<div class="remediate">Navigator: &ldquo;The number is <strong>2-1-1</strong>. You can call anytime, 24 hours a day, to find food, housing, and other help near your home.&rdquo;</div>' +
+   '</div>',
+es:'<div class="chat-area">' +
+   '<div><div class="chat-lbl">Navigator AI</div><div class="bubble b-ai"><strong>&iquest;A qu&eacute; n&uacute;mero llamar&iacute;a para encontrar ayuda con comida o vivienda cerca de su casa?</strong></div></div>' +
+   '<div style="align-items:flex-end;display:flex;flex-direction:column"><div class="chat-lbl r">Rosa</div><div class="bubble b-pt">&ldquo;No estoy segura&hellip; &iquest;quiz&aacute;s el trabajador social? No recuerdo un n&uacute;mero.&rdquo;</div></div>' +
+   '<div class="grade g-fail">&#10007; No aprobado &mdash; no record&oacute; el &ldquo;2-1-1&rdquo;</div>' +
+   '<div class="remediate">Navigator: &ldquo;El n&uacute;mero es <strong>2-1-1</strong>. Puede llamar en cualquier momento, las 24 horas del d&iacute;a, para encontrar ayuda con comida, vivienda y otros servicios cerca de su casa.&rdquo;</div>' +
+   '</div>',
+ev:[{t:'mod',l:'Q3 FAIL &mdash; gap flag',x:'&#9888; 2-1-1 recall FAIL &middot; gap_flag: food_resource_211 = true &middot; Care coordinator alert + 48-hr follow-up call scheduled'},{t:'info',l:'corrective delivered',x:'Inline corrective delivered immediately in patient&rsquo;s selected language'}],
+note:'<strong>Gap flagged &mdash; corrective delivered inline, in the patient&rsquo;s language.</strong> The app doesn&rsquo;t just score the fail &mdash; it immediately delivers the correct answer so Rosa leaves with the information regardless. The gap flag triggers a care coordinator notification and a 48-hr follow-up call.'},
 
-{stage:"epic",name:"Epic write-back",
-screen:`<p style="font-size:12px;font-weight:700;margin-bottom:.5rem">FHIR write-back — auto-generated payload</p>
-<div class="fhir-list">
-<span class="fhir-key">Observation ×6</span>  <span class="fhir-muted">One per LOINC field</span><br>
-<span class="fhir-key"> 88122-7</span>  <span class="fhir-ok">food_q1 = "Often true"</span><br>
-<span class="fhir-key"> 88123-5</span>  <span class="fhir-warn">food_q2 = "Often true" → Z59.41</span><br>
-<span class="fhir-key"> AHC Q3</span>  <span class="fhir-muted">housing = "Not worried"</span><br>
-<span class="fhir-key"> AHC Q5</span>  <span class="fhir-warn">transport = "Yes" → Z59.82</span><br>
-<span class="fhir-key"> AHC Q4</span>  <span class="fhir-warn">utilities = "Yes" → Z59.12</span><br>
-<span class="fhir-key">urgency_flag</span>  <span class="fhir-danger">true → HIGH alert fired</span><br>
-<span class="fhir-key">screen_tool</span>  <span class="fhir-muted">"AHC HRSN + HVS"</span><br>
-<span class="fhir-key">comprehension</span>  <span class="fhir-muted">2/3 · gap: 211_recall</span><br>
-<span class="fhir-key">intervention</span>  <span class="fhir-ok">SNOMED 410076003 + 3457005</span><br>
-<span class="fhir-key">mdm_narrative</span>  <span class="fhir-muted">"Food insecurity (fixed income; Z59.41) + transport barrier (missed cardiology 2–4 wks; upcoming 8 days; Z59.82) limit ED care plan — telehealth conversion required."</span>
-</div>`,
-events:[{t:"success",l:"write-back complete",x:"6 Observation resources + 3 Condition resources (unconfirmed) + 1 DocumentReference (96160) + discharge summary append → Epic"},{t:"info",l:"physician action",x:"Epic BPA: 'Navigator SDOH screen positive — 3 secondary diagnoses ready to confirm.' Estimated physician time: ~30 seconds"},{t:"trigger",l:"TCM pre-auth",x:"If admitted: TCM pre-auth initiated · TCM 2-business-day contact reminder fires at [discharge time + 47 hrs]"}],
-note:`<strong>Everything in Epic — physician action is one click.</strong> The attending sees a single BestPractice Advisory: "Navigator SDOH screen positive — 3 secondary diagnoses ready to review." One confirmation click activates Z59.41, Z59.82, and Z59.12 as secondary diagnoses and completes the MDM documentation. Total physician time added by Navigator: approximately 30 seconds. Before Navigator, none of this documentation existed.`}
-];
+/* 14 Score */
+{g:'teachback', name:'Score',
+en:'<div class="score-card"><div><span class="snum">2</span><span class="sden"> / 3</span></div>' +
+   '<div class="slbl">comprehension questions correct</div>' +
+   '<div class="sbadge">PASS &mdash; education complete</div></div>' +
+   '<div class="srows">' +
+   '<div class="srow"><span>CHF warning signs (Q1)</span><span class="pm">&#10003; Pass</span></div>' +
+   '<div class="srow"><span>Food resources &mdash; SNAP / food bank (Q2)</span><span class="pm">&#10003; Pass</span></div>' +
+   '<div class="srow"><span>2-1-1 community resource line (Q3)</span><span class="fm">&#10007; Gap flagged</span></div>' +
+   '</div>' +
+   '<p style="font-size:10px;color:#888;margin-top:.6rem;line-height:1.4">A community health worker will follow up about food support. Your care coordinator will call within 2 days after you go home.</p>',
+es:'<div class="score-card"><div><span class="snum">2</span><span class="sden"> / 3</span></div>' +
+   '<div class="slbl">preguntas de comprensi&oacute;n respondidas correctamente</div>' +
+   '<div class="sbadge">APROBADO &mdash; educaci&oacute;n completa</div></div>' +
+   '<div class="srows">' +
+   '<div class="srow"><span>Se&ntilde;ales de insuficiencia card&iacute;aca (P1)</span><span class="pm">&#10003; Aprobado</span></div>' +
+   '<div class="srow"><span>Recursos alimentarios &mdash; SNAP / banco de alimentos (P2)</span><span class="pm">&#10003; Aprobado</span></div>' +
+   '<div class="srow"><span>L&iacute;nea comunitaria 2-1-1 (P3)</span><span class="fm">&#10007; Se&ntilde;alado</span></div>' +
+   '</div>' +
+   '<p style="font-size:10px;color:#888;margin-top:.6rem;line-height:1.4">Un trabajador de salud comunitaria le dar&aacute; seguimiento sobre apoyo alimentario. Su coordinador de atenci&oacute;n le llamar&aacute; dentro de 2 d&iacute;as despu&eacute;s de irse a casa.</p>',
+ev:[{t:'success',l:'score written',x:'Comprehension score 2/3 &rarr; Epic discharge summary &middot; Gap flags: 211_recall = true &middot; SNOMED CT 410076003 logged'},{t:'success',l:'SNS-E numerator',x:'HEDIS SNS-E food intervention numerator: MET &mdash; education + referral within same visit'}],
+note:'<strong>2/3 = pass. The gap flag is the clinically important output.</strong> Score and gap flags written automatically to the Epic discharge summary. HEDIS SNS-E education intervention timestamped. The 48-hr follow-up call has a documented agenda: confirm Rosa can recall 2-1-1.'},
 
-const stageOrder=["welcome","food","housing","transport","urgency","deepdive","teachback","billing","epic"];
-const allEvents=[];
-let cur=0;
+/* 15 Billing */
+{g:'billing', name:'Billing cascade',
+en:'<p style="font-size:12px;font-weight:700;margin-bottom:.5rem">Billing codes triggered &mdash; this encounter</p>' +
+   '<div class="blist">' +
+   '<div class="brow"><span class="bcode">96160</span><span class="bdesc">Health risk assessment (HVS + AHC HRSN). LOINC-coded per-question responses.</span><span class="bamt">~$3</span></div>' +
+   '<div class="brow"><span class="bcode">99285</span><span class="bdesc">ED E/M &mdash; high severity (CHF). SDOH complexity (Z59.41 + Z59.82) reinforces MDM, protects code at audit.</span><span class="bamt">~$242</span></div>' +
+   '<div class="brow"><span class="bcode">Z59.41</span><span class="bdesc">Food insecurity secondary Dx. One-click confirm in Epic. If admitted &rarr; potential DRG CC.</span><span class="bamt">MDM</span></div>' +
+   '<div class="brow"><span class="bcode">Z59.82</span><span class="bdesc">Transportation insecurity secondary Dx. Supports MDM, telehealth justification.</span><span class="bamt">MDM</span></div>' +
+   '<div class="brow"><span class="bcode">G0019</span><span class="bdesc">CHI &mdash; first 60 min/month. CHW: food referral + SNAP enrollment + transport coordination.</span><span class="bamt">~$80</span></div>' +
+   '<div class="brow"><span class="bcode">99495</span><span class="bdesc">TCM &mdash; if admitted from ED (likely with CHF). F2F within 14 days.</span><span class="bamt">~$201</span></div>' +
+   '<div class="btotal"><span>ED visit + 30-day CHI</span><span style="color:#166534">~$325</span></div>' +
+   '<div class="btotal" style="border-top:none;margin-top:-4px;font-size:10px;font-weight:500;color:#555"><span>+ TCM if admitted (likely)</span><span style="color:#166534">+$201</span></div>' +
+   '</div>',
+es:'<div class="staff-note">Vista del equipo cl&iacute;nico / Clinical team view &mdash; not patient-facing</div>' +
+   '<p style="font-size:12px;font-weight:700;margin-bottom:.5rem">Billing codes triggered &mdash; this encounter</p>' +
+   '<div class="blist">' +
+   '<div class="brow"><span class="bcode">96160</span><span class="bdesc">Health risk assessment (HVS + AHC HRSN). LOINC-coded responses.</span><span class="bamt">~$3</span></div>' +
+   '<div class="brow"><span class="bcode">99285</span><span class="bdesc">ED E/M &mdash; high severity. SDOH complexity reinforces MDM.</span><span class="bamt">~$242</span></div>' +
+   '<div class="brow"><span class="bcode">Z59.41</span><span class="bdesc">Food insecurity secondary Dx. One-click confirm in Epic.</span><span class="bamt">MDM</span></div>' +
+   '<div class="brow"><span class="bcode">Z59.82</span><span class="bdesc">Transportation insecurity secondary Dx.</span><span class="bamt">MDM</span></div>' +
+   '<div class="brow"><span class="bcode">G0019</span><span class="bdesc">CHI &mdash; first 60 min/month. CHW navigation.</span><span class="bamt">~$80</span></div>' +
+   '<div class="brow"><span class="bcode">99495</span><span class="bdesc">TCM &mdash; if admitted. F2F within 14 days.</span><span class="bamt">~$201</span></div>' +
+   '<div class="btotal"><span>ED visit + 30-day CHI</span><span style="color:#166534">~$325</span></div>' +
+   '<div class="btotal" style="border-top:none;margin-top:-4px;font-size:10px;font-weight:500;color:#555"><span>+ TCM if admitted</span><span style="color:#166534">+$201</span></div>' +
+   '</div>',
+ev:[{t:'trigger',l:'billing queued',x:'96160 payload &rarr; Epic billing queue &middot; Z59.41 + Z59.82 queued for physician confirmation'},{t:'info',l:'G0019 status',x:'G0019 time log: 49 min &middot; 11 min to billing threshold &middot; INFO alert fires at 55 min'},{t:'success',l:'HEDIS SNS-E',x:'SNS-E screening numerator: MET &middot; SNS-E intervention numerator: MET'}],
+note:'<strong>ED E/M codes are 99281&ndash;99285 &mdash; not office 99213&ndash;99214.</strong> Rosa&rsquo;s CHF already supports 99285 (~$242); Z-code documentation reinforces MDM and protects the code at audit. Before Navigator, none of these codes were captured at Eisenhower for this encounter type because there was no systematic SDOH screen.'},
 
-function buildDots(){
-  const d=document.getElementById("dots");
-  d.innerHTML="";
-  STEPS.forEach((_,i)=>{
-    const el=document.createElement("div");
-    el.className="dot";
-    el.title="Step "+(i+1);
-    el.onclick=()=>goTo(i);
-    d.appendChild(el);
-  });
+/* 16 Epic */
+{g:'epic', name:'Epic write-back',
+en:'<p style="font-size:12px;font-weight:700;margin-bottom:.5rem">FHIR write-back &mdash; auto-generated payload</p>' +
+   '<div class="fhir">' +
+   '<span class="fk">Observation &times;6</span>  <span class="fm2">One per LOINC field</span><br>' +
+   '<span class="fk">&nbsp;88122-7</span>  <span class="fo">food_q1 = Yes</span><br>' +
+   '<span class="fk">&nbsp;88123-5</span>  <span class="fw">food_q2 = Yes &rarr; Z59.41</span><br>' +
+   '<span class="fk">&nbsp;AHC Q3</span>  <span class="fm2">housing = No (stable)</span><br>' +
+   '<span class="fk">&nbsp;AHC Q5</span>  <span class="fw">transport = Yes &rarr; Z59.82</span><br>' +
+   '<span class="fk">&nbsp;AHC Q4</span>  <span class="fw">utilities = Yes &rarr; Z59.12</span><br>' +
+   '<span class="fk">urgency_flag</span>  <span class="fd">true &rarr; HIGH alert fired</span><br>' +
+   '<span class="fk">screen_tool</span>  <span class="fm2">&ldquo;AHC HRSN + HVS&rdquo; &middot; lang=en</span><br>' +
+   '<span class="fk">comprehension</span>  <span class="fm2">2/3 &middot; gap: 211_recall</span><br>' +
+   '<span class="fk">intervention</span>  <span class="fo">SNOMED 410076003 + 3457005</span><br>' +
+   '<span class="fk">mdm_narrative</span>  <span class="fm2">&ldquo;Food insecurity (fixed income; Z59.41) + transport barrier (missed appt last month; upcoming in 8 days; Z59.82) &mdash; telehealth conversion required.&rdquo;</span>' +
+   '</div>',
+es:'<div class="staff-note">Registro t&eacute;cnico de Epic / Epic system record &mdash; clinical team view</div>' +
+   '<p style="font-size:12px;font-weight:700;margin-bottom:.5rem">FHIR write-back &mdash; auto-generated payload</p>' +
+   '<div class="fhir">' +
+   '<span class="fk">Observation &times;6</span>  <span class="fm2">One per LOINC field</span><br>' +
+   '<span class="fk">&nbsp;88122-7</span>  <span class="fo">food_q1 = S&iacute;</span><br>' +
+   '<span class="fk">&nbsp;88123-5</span>  <span class="fw">food_q2 = S&iacute; &rarr; Z59.41</span><br>' +
+   '<span class="fk">&nbsp;AHC Q3</span>  <span class="fm2">housing = No (estable)</span><br>' +
+   '<span class="fk">&nbsp;AHC Q5</span>  <span class="fw">transport = S&iacute; &rarr; Z59.82</span><br>' +
+   '<span class="fk">&nbsp;AHC Q4</span>  <span class="fw">utilities = S&iacute; &rarr; Z59.12</span><br>' +
+   '<span class="fk">urgency_flag</span>  <span class="fd">true &rarr; HIGH alert fired</span><br>' +
+   '<span class="fk">screen_tool</span>  <span class="fm2">&ldquo;AHC HRSN + HVS&rdquo; &middot; lang=es</span><br>' +
+   '<span class="fk">comprehension</span>  <span class="fm2">2/3 &middot; gap: 211_recall</span><br>' +
+   '<span class="fk">intervention</span>  <span class="fo">SNOMED 410076003 + 3457005</span><br>' +
+   '<span class="fk">mdm_narrative</span>  <span class="fm2">&ldquo;Food insecurity (fixed income; Z59.41) + transport barrier (missed appt last month; upcoming in 8 days; Z59.82) &mdash; telehealth conversion required.&rdquo;</span>' +
+   '</div>',
+ev:[{t:'success',l:'write-back complete',x:'6 Observation resources + 3 Condition resources (unconfirmed) + 1 DocumentReference &rarr; Epic &middot; lang=es recorded in session metadata'},{t:'info',l:'physician action',x:'Epic BPA: &ldquo;Navigator SDOH screen positive &mdash; 3 secondary diagnoses ready to confirm.&rdquo; ~30 seconds.'},{t:'trigger',l:'TCM pre-auth',x:'If admitted: TCM pre-auth initiated &middot; 2-business-day contact reminder fires at [discharge + 47 hrs]'}],
+note:'<strong>Everything in Epic &mdash; physician action is one click.</strong> The LOINC-coded values store Rosa&rsquo;s responses in the language she used (shown in Spanish here for the ES mode). The Z-code logic, billing flags, and MDM narrative are generated identically regardless of screen language. Total physician time added: ~30 seconds.'}
+
+]; /* end S */
+
+/* ─── Language toggle ───────────────────────────────────────────────────── */
+function setLang(l) {
+  lang = l;
+  document.getElementById('lt-en').classList.toggle('on', l === 'en');
+  document.getElementById('lt-es').classList.toggle('on', l === 'es');
+  document.getElementById('screen').innerHTML = l === 'es' ? S[cur].es : S[cur].en;
 }
 
-function updateStages(s){
-  const idx=stageOrder.indexOf(s);
-  stageOrder.forEach((st,i)=>{
-    const el=document.getElementById("st-"+st);
-    if(!el)return;
-    el.className="stage"+(i<idx?" done":i===idx?" active":"");
-  });
-  // scroll to active stage
-  const active=document.querySelector(".stage.active");
-  if(active)active.scrollIntoView({inline:"center",behavior:"smooth",block:"nearest"});
+/* ── Event delegation for .lang-btn clicks inside #screen ──────────────── */
+/* This fires even when buttons are injected via innerHTML                   */
+document.getElementById('screen').addEventListener('click', function(e) {
+  var btn = e.target;
+  while (btn && btn !== this) {
+    if (btn.classList && btn.classList.contains('lang-btn')) {
+      var l = btn.getAttribute('data-lang');
+      if (l) setLang(l);
+      return;
+    }
+    btn = btn.parentNode;
+  }
+});
+
+/* ─── Navigation ────────────────────────────────────────────────────────── */
+var stageOrder = ['welcome','food','housing','transport','urgency','deepdive','teachback','billing','epic'];
+
+function buildDots() {
+  var d = document.getElementById('dots');
+  d.innerHTML = '';
+  for (var i = 0; i < S.length; i++) {
+    (function(n) {
+      var el = document.createElement('div');
+      el.className = 'dot';
+      el.onclick = function() { goTo(n); };
+      d.appendChild(el);
+    })(i);
+  }
 }
 
-function goTo(n){
-  if(n<0||n>=STEPS.length)return;
-  cur=n;
-  const s=STEPS[n];
-  document.getElementById("screen").innerHTML=s.screen;
-  document.getElementById("annotation").innerHTML='<div class="at">Navigator insight</div>'+s.note;
-  document.getElementById("prog-lbl").textContent="Step "+(n+1)+" of "+STEPS.length;
-  document.getElementById("prog-bar").style.width=(((n+1)/STEPS.length)*100)+"%";
-  document.getElementById("step-num").textContent=(n+1)+" / "+STEPS.length;
-  document.getElementById("step-name").textContent=s.name;
-  document.getElementById("prevBtn").disabled=n===0;
-  document.getElementById("nextBtn").disabled=n===STEPS.length-1;
-  document.querySelectorAll(".dot").forEach((d,i)=>{
-    d.className="dot"+(i<n?" done":i===n?" active":"");
-  });
-  s.events.forEach(ev=>{if(!allEvents.find(e=>e.x===ev.x))allEvents.push(ev);});
-  const log=document.getElementById("eventlog");
-  log.innerHTML="";
-  const shown=allEvents.slice(-9);
-  shown.forEach((ev,idx)=>{
-    const el=document.createElement("div");
-    const tmap={info:"ev-info",trigger:"ev-trigger",mod:"ev-mod",high:"ev-high",success:"ev-success"};
-    el.className="ev "+(tmap[ev.t]||"ev-info")+(idx===shown.length-1?" ev-new":"");
-    el.innerHTML='<div class="ev-label">'+(ev.l||ev.t)+"</div>"+ev.x;
+function updateStages(g) {
+  var idx = stageOrder.indexOf(g);
+  for (var i = 0; i < stageOrder.length; i++) {
+    var el = document.getElementById('st-' + stageOrder[i]);
+    if (!el) continue;
+    el.className = 'stage' + (i < idx ? ' done' : i === idx ? ' active' : '');
+  }
+  var a = document.querySelector('.stage.active');
+  if (a) a.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
+}
+
+function goTo(n) {
+  if (n < 0 || n >= S.length) return;
+  cur = n;
+  var s = S[n];
+
+  document.getElementById('screen').innerHTML = lang === 'es' ? s.es : s.en;
+  document.getElementById('ann').innerHTML = '<div class="at">Navigator insight</div>' + s.note;
+  document.getElementById('prog-lbl').textContent = 'Step ' + (n+1) + ' of ' + S.length;
+  document.getElementById('pfill').style.width = (((n+1)/S.length)*100) + '%';
+  document.getElementById('snum').textContent = (n+1) + ' / ' + S.length;
+  document.getElementById('sname').textContent = s.name;
+  document.getElementById('prevBtn').disabled = (n === 0);
+  document.getElementById('nextBtn').disabled = (n === S.length-1);
+
+  var dots = document.querySelectorAll('.dot');
+  for (var i = 0; i < dots.length; i++) {
+    dots[i].className = 'dot' + (i < n ? ' done' : i === n ? ' active' : '');
+  }
+
+  for (var j = 0; j < s.ev.length; j++) {
+    var found = false;
+    for (var k = 0; k < allEv.length; k++) { if (allEv[k].x === s.ev[j].x) { found = true; break; } }
+    if (!found) allEv.push(s.ev[j]);
+  }
+
+  var log = document.getElementById('evlog');
+  log.innerHTML = '';
+  var shown = allEv.slice(-9);
+  var tm = { info:'ev-info', trigger:'ev-trigger', mod:'ev-mod', high:'ev-high', success:'ev-success' };
+  for (var m = 0; m < shown.length; m++) {
+    var e2 = shown[m];
+    var el = document.createElement('div');
+    el.className = 'ev ' + (tm[e2.t] || 'ev-info') + (m === shown.length-1 ? ' ev-new' : '');
+    el.innerHTML = '<div class="ev-lbl">' + (e2.l || e2.t) + '</div>' + e2.x;
     log.appendChild(el);
-  });
-  updateStages(s.stage);
+  }
+
+  updateStages(s.g);
 }
 
-function navigate(dir){goTo(cur+dir);}
+function navigate(d) { goTo(cur + d); }
 
-// keyboard nav
-document.addEventListener("keydown",e=>{
-  if(e.key==="ArrowRight"||e.key==="ArrowDown")navigate(1);
-  if(e.key==="ArrowLeft"||e.key==="ArrowUp")navigate(-1);
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   navigate(-1);
 });
 
 buildDots();
