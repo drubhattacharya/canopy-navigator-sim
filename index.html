@@ -277,6 +277,31 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .dot.active{background:var(--teal);transform:scale(1.3)} .dot.done{background:var(--success-border)}
 footer{background:var(--navy);color:rgba(255,255,255,.5);text-align:center;padding:1rem;font-size:11px;margin-top:2rem}
 footer strong{color:rgba(255,255,255,.85)}
+
+/* REVENUE CHART PANEL */
+.chart-panel{background:#fff;border-radius:12px;border:1.5px solid var(--border);padding:12px 14px;margin-top:14px}
+.chart-hdr{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:3px}
+.chart-sub{font-size:9px;color:var(--text-muted);margin-bottom:9px;display:flex;align-items:center;justify-content:space-between}
+.chart-total{font-size:18px;font-weight:800;color:var(--success-text);letter-spacing:-.02em}
+.chart-total-lbl{font-size:9px;color:var(--text-muted);margin-top:0px}
+.chart-max-lbl{font-size:9px;color:var(--text-muted)}
+.chart-streams{display:flex;flex-direction:column;gap:5px;margin:6px 0}
+.chart-stream{display:flex;align-items:center;gap:6px}
+.chart-stream-lbl{font-size:9px;font-weight:600;color:var(--text-secondary);width:60px;flex-shrink:0;text-align:right}
+.chart-track{flex:1;height:14px;background:#F0F4F8;border-radius:7px;overflow:hidden;position:relative}
+.chart-bar{height:100%;border-radius:7px;transition:width .5s cubic-bezier(.34,1.2,.64,1);min-width:0}
+.chart-bar-mateo{background:linear-gradient(90deg,#1F3864,#2d5291)}
+.chart-bar-rosa{background:linear-gradient(90deg,var(--teal),#00a896)}
+.chart-bar-discharge{background:linear-gradient(90deg,#6B21A8,#9333EA)}
+.chart-bar-conditional{background:repeating-linear-gradient(45deg,#d1fae5 0px,#d1fae5 3px,#a7f3d0 3px,#a7f3d0 6px);opacity:.7}
+.chart-stream-val{font-size:10px;font-weight:700;color:var(--text-secondary);width:34px;text-align:right;flex-shrink:0}
+.chart-milestone{font-size:9px;font-weight:700;color:var(--success-text);background:var(--success-bg);border:1px solid var(--success-border);border-radius:5px;padding:2px 7px;margin-top:5px;display:none;animation:milefade .4s ease}
+@keyframes milefade{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+.chart-legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;padding-top:6px;border-top:1px solid var(--border)}
+.chart-leg-item{display:flex;align-items:center;gap:3px;font-size:9px;color:var(--text-secondary)}
+.chart-leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.chart-vs{margin-top:6px;padding:5px 8px;background:#FEF2F2;border-radius:7px;font-size:9px;color:#991B1B;font-weight:600;text-align:center}
+
 </style>
 </head>
 <body>
@@ -331,7 +356,61 @@ footer strong{color:rgba(255,255,255,.85)}
       </div></div>
       <div class="ann" id="ann"></div>
     </div>
-    <div class="evpanel"><div class="evhdr">Live system events</div><div id="evlog"></div></div>
+    <div>
+      <div class="evpanel"><div class="evhdr">Live system events</div><div id="evlog"></div></div>
+      <div class="chart-panel">
+        <div class="chart-hdr">Revenue captured &middot; Canopy automation</div>
+        <div class="chart-sub">
+          <span>Builds in real time as the encounter progresses</span>
+          <span class="chart-max-lbl">Max: $830</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px">
+          <span class="chart-total" id="chart-total">$0</span>
+          <span class="chart-total-lbl">base encounter value captured</span>
+        </div>
+        <div class="chart-vs" id="chart-vs">Without Canopy: $0 &mdash; all codes uncaptured</div>
+        <div class="chart-streams">
+          <div class="chart-stream">
+            <span class="chart-stream-lbl">Mateo</span>
+            <div class="chart-track"><div class="chart-bar chart-bar-mateo" id="bar-mateo" style="width:0%"></div></div>
+            <span class="chart-stream-val" id="val-mateo">$0</span>
+          </div>
+          <div class="chart-stream">
+            <span class="chart-stream-lbl">Rosa SDOH</span>
+            <div class="chart-track"><div class="chart-bar chart-bar-rosa" id="bar-rosa" style="width:0%"></div></div>
+            <span class="chart-stream-val" id="val-rosa">$0</span>
+          </div>
+          <div class="chart-stream">
+            <span class="chart-stream-lbl">Discharge</span>
+            <div class="chart-track"><div class="chart-bar chart-bar-discharge" id="bar-discharge" style="width:0%"></div></div>
+            <span class="chart-stream-val" id="val-discharge">$0</span>
+          </div>
+          <div class="chart-stream">
+            <span class="chart-stream-lbl" style="color:#166534">+ Conditional</span>
+            <div class="chart-track"><div class="chart-bar chart-bar-conditional" id="bar-cond" style="width:0%"></div></div>
+            <span class="chart-stream-val" id="val-cond" style="color:#166534;font-size:9px">—</span>
+          </div>
+          <div class="chart-stream" style="margin-top:3px;padding-top:5px;border-top:1px dashed var(--border)">
+            <span class="chart-stream-lbl" style="color:#92400E">Staff time</span>
+            <div class="chart-track"><div class="chart-bar chart-bar-prod" id="bar-prod" style="width:0%"></div></div>
+            <span class="chart-stream-val" id="val-prod" style="color:#92400E;font-size:9px"></span>
+          </div>
+        </div>
+        <div class="chart-combined">
+          <span class="chart-combined-lbl">Total encounter value (revenue + productivity)</span>
+          <span class="chart-combined-val" id="chart-combined"></span>
+        </div>
+        <div class="chart-milestone" id="chart-milestone"></div>
+        <div class="chart-legend">
+          <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#1F3864"></div>Mateo (allergy + education)</div>
+          <div class="chart-leg-item"><div class="chart-leg-dot" style="background:var(--teal)"></div>Rosa (SDOH + CHW)</div>
+          <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#6B21A8"></div>Discharge mgmt</div>
+          <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#d1fae5;border:1px solid #16a34a"></div>Vaccines + TCM (conditional)</div>
+          <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#d97706"></div>Staff time value (~50 min @ $55/hr)</div>
+        </div>
+        <div class="chart-footnote">Staff time: BLS 2024 CA RN median $55/hr &middot; 50 min automated per encounter &middot; Capacity freed for higher-value care, not cost elimination</div>
+      </div>
+    </div>
   </div>
   <div class="nav-ctrl">
     <button class="nbtn" id="prevBtn" onclick="navigate(-1)" disabled>&larr; Prev</button>
@@ -905,6 +984,7 @@ function goTo(n){
   }
 
   updateStages(s.g);
+  updateChart(n);
 }
 
 function navigate(d){goTo(cur+d);}
@@ -913,6 +993,91 @@ document.addEventListener('keydown',function(e){
   if(e.key==='ArrowRight'||e.key==='ArrowDown')navigate(1);
   if(e.key==='ArrowLeft'||e.key==='ArrowUp')navigate(-1);
 });
+
+/* ── REVENUE CHART ─────────────────────────────────────────────────────────── */
+// Per-step incremental billing [mateo, rosa, discharge, conditional_bonus, milestone_label]
+// BILL[i] = [mateo, rosa, discharge, conditional, productivity, milestone_label]
+// Productivity: interpreter(14)+SDOH admin(9)+Z-code doc(7)+Epic write-back(6)+vaccine detect(5)+TB scoring(5)=$46 @ $55/hr BLS CA RN
+var BILL = [
+  [0,   0,  0,  0,   0,  ''],
+  [0,   0,  0,  0,   14, '⏱ Interpreter coordination averted (~15 min @ $55/hr)'],
+  [0,   0,  0,  0,   0,  ''],
+  [193, 0,  0,  95,  0,  '⚡ 99284 ED E/M · L50.0 · Z88.0 · +$193'],
+  [0,   0,  0,  0,   0,  ''],
+  [0,   0,  0,  0,   9,  '⏱ SDOH admin averted (~10 min self-screen @ $55/hr)'],
+  [0,   3,  0,  0,   0,  '⚡ 96160 health risk assessment · Z59.41 · +$3'],
+  [0,   0,  0,  0,   7,  '⏱ Z-code documentation averted (~8 min auto-gen)'],
+  [0,   80, 0,  0,   0,  '⚡ G0019 Community Health Integration · +$80'],
+  [0,   0,  0,  0,   6,  '⏱ Epic write-back averted (~7 min FHIR automation)'],
+  [0,   38, 0,  0,   0,  '⚡ G0541 Caregiver Training · Z63.6 · +$38'],
+  [47,  0,  0,  201, 5,  '⚡ 99401 Preventive counseling · Z28.3 · +$47 | ⏱ Vaccine gap detect averted'],
+  [0,   0,  0,  0,   0,  ''],
+  [0,   0,  0,  0,   0,  ''],
+  [0,   0,  0,  0,   0,  ''],
+  [0,   0,  0,  0,   0,  ''],
+  [0,   0,  0,  0,   5,  '⏱ Teach-back scoring averted (~5 min AI grading)'],
+  [0,   0,  145,0,   0,  '⚡ 99238 Discharge management · +$145'],
+  [0,   0,  0,  0,   0,  '']
+];var MAX_BILL = 830; // maximum possible encounter value
+
+function updateChart(stepIdx) {
+  var mateo=0, rosa=0, disc=0, cond=0, prod=0;
+  for (var i=0; i<=stepIdx && i<BILL.length; i++) {
+    mateo += BILL[i][0];
+    rosa  += BILL[i][1];
+    disc  += BILL[i][2];
+    if (BILL[i][3]) cond = BILL[i][3];
+    prod  += BILL[i][4];
+  }
+  var base = mateo + rosa + disc;
+  var combined = base + prod;
+  var MAX_COMBINED = MAX_BILL + 46;
+  var pct = function(v){ return Math.min(100, (v/MAX_COMBINED)*100).toFixed(1)+'%'; };
+
+  document.getElementById('bar-mateo').style.width    = pct(mateo);
+  document.getElementById('bar-rosa').style.width     = pct(rosa);
+  document.getElementById('bar-discharge').style.width= pct(disc);
+  document.getElementById('bar-cond').style.width     = cond ? pct(cond) : '0%';
+  document.getElementById('bar-prod').style.width     = prod ? pct(prod) : '0%';
+
+  document.getElementById('val-mateo').textContent     = mateo ? '$'+mateo  : '$0';
+  document.getElementById('val-rosa').textContent      = rosa  ? '$'+rosa   : '$0';
+  document.getElementById('val-discharge').textContent = disc  ? '$'+disc   : '$0';
+  document.getElementById('val-cond').textContent      = cond  ? '+$'+cond  : '—';
+  document.getElementById('val-prod').textContent      = prod  ? '+$'+prod  : '—';
+
+  document.getElementById('chart-total').textContent = '$'+base;
+  document.getElementById('chart-combined').textContent = combined ? '$'+combined : '$0';
+
+  var vs = document.getElementById('chart-vs');
+  if (base === 0 && prod === 0) {
+    vs.textContent = 'Without Canopy: $0 — all codes uncaptured, all staff time costs incurred';
+    vs.style.background = '#FEF2F2'; vs.style.color = '#991B1B';
+  } else {
+    vs.innerHTML = 'Revenue: <strong style="color:#166534">+$'+base+'</strong>'
+      + ' &nbsp;+&nbsp; Staff time: <strong style="color:#92400E">+$'+prod+'</strong>'
+      + ' &nbsp;= &nbsp;<strong style="color:#166534">$'+combined+' vs. $0 without Canopy</strong>';
+    vs.style.background = '#F0FDF4'; vs.style.color = '#166534';
+  }
+
+  var ms = document.getElementById('chart-milestone');
+  var step = stepIdx < BILL.length ? BILL[stepIdx] : null;
+  var hasRevenue = step && (step[0]+step[1]+step[2]) > 0;
+  var hasProd = step && step[4] > 0;
+  var label = step ? step[5] : '';
+  if (label && (hasRevenue || hasProd)) {
+    var icon = (hasProd && !hasRevenue) ? '⏱' : '⚡';
+    ms.style.background = (hasProd && !hasRevenue) ? '#FEF3C7' : '';
+    ms.style.color = (hasProd && !hasRevenue) ? '#92400E' : '';
+    ms.style.borderColor = (hasProd && !hasRevenue) ? '#D97706' : '';
+    ms.textContent = icon + ' ' + label;
+    ms.style.display = 'block';
+    clearTimeout(ms._t);
+    ms._t = setTimeout(function(){ ms.style.display='none'; }, 3200);
+  } else {
+    if (base === 0 && prod === 0) ms.style.display = 'none';
+  }
+}
 
 buildDots();
 goTo(0);
@@ -943,6 +1108,8 @@ document.getElementById('pdf-close-btn').addEventListener('click', closePdfViewe
 document.getElementById('pdf-ov').addEventListener('click', function(e){
   if(e.target === this) closePdfViewer();
 });
+
+
 
 </script>
 </body>
