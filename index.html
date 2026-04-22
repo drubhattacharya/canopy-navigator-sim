@@ -386,18 +386,18 @@ footer strong{color:rgba(255,255,255,.85)}
             <span class="chart-stream-val" id="val-discharge">$0</span>
           </div>
           <div class="chart-stream">
-            <span class="chart-stream-lbl" style="color:#166534">+ Conditional</span>
+            <span class="chart-stream-lbl" style="color:#166534" title="90460/90461 vaccines + 99495 TCM — available if clinically indicated">&#43; Unlocked upside</span>
             <div class="chart-track"><div class="chart-bar chart-bar-conditional" id="bar-cond" style="width:0%"></div></div>
             <span class="chart-stream-val" id="val-cond" style="color:#166534;font-size:9px">—</span>
           </div>
           <div class="chart-stream" style="margin-top:3px;padding-top:5px;border-top:1px dashed var(--border)">
             <span class="chart-stream-lbl" style="color:#92400E">Staff time</span>
             <div class="chart-track"><div class="chart-bar chart-bar-prod" id="bar-prod" style="width:0%"></div></div>
-            <span class="chart-stream-val" id="val-prod" style="color:#92400E;font-size:9px"></span>
+            <span style="display:flex;flex-direction:column;align-items:flex-end;min-width:44px"><span class="chart-stream-val" id="val-prod" style="color:#92400E;font-size:10px;font-weight:700"></span><span id="val-prod-min" style="font-size:8px;color:#b45309;white-space:nowrap"></span></span>
           </div>
         </div>
         <div class="chart-combined">
-          <span class="chart-combined-lbl">Total encounter value (revenue + productivity)</span>
+          <span class="chart-combined-lbl">Total value captured &nbsp;<span id="comb-time-lbl" style="color:#92400E;font-weight:400;font-size:8px"></span></span>
           <span class="chart-combined-val" id="chart-combined"></span>
         </div>
         <div class="chart-milestone" id="chart-milestone"></div>
@@ -405,7 +405,7 @@ footer strong{color:rgba(255,255,255,.85)}
           <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#1F3864"></div>Mateo (allergy + education)</div>
           <div class="chart-leg-item"><div class="chart-leg-dot" style="background:var(--teal)"></div>Rosa (SDOH + CHW)</div>
           <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#6B21A8"></div>Discharge mgmt</div>
-          <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#d1fae5;border:1px solid #16a34a"></div>Vaccines + TCM (conditional)</div>
+          <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#d1fae5;border:1px solid #16a34a"></div>Unlocked upside: vaccines today + TCM (potential +$296)</div>
           <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#d97706"></div>Staff time value (~50 min @ $55/hr)</div>
         </div>
         <div class="chart-footnote">Staff time: BLS 2024 CA RN median $55/hr &middot; 50 min automated per encounter &middot; Capacity freed for higher-value care, not cost elimination</div>
@@ -996,38 +996,39 @@ document.addEventListener('keydown',function(e){
 
 /* ── REVENUE CHART ─────────────────────────────────────────────────────────── */
 // Per-step incremental billing [mateo, rosa, discharge, conditional_bonus, milestone_label]
-// BILL[i] = [mateo, rosa, discharge, conditional, productivity, milestone_label]
+// BILL[i] = [mateo, rosa, discharge, conditional, prod_$, milestone_label, prod_min]
 // Productivity: interpreter(14)+SDOH admin(9)+Z-code doc(7)+Epic write-back(6)+vaccine detect(5)+TB scoring(5)=$46 @ $55/hr BLS CA RN
 var BILL = [
-  [0,   0,  0,  0,   0,  ''],
-  [0,   0,  0,  0,   14, '⏱ Interpreter coordination averted (~15 min @ $55/hr)'],
-  [0,   0,  0,  0,   0,  ''],
-  [193, 0,  0,  95,  0,  '⚡ 99284 ED E/M · L50.0 · Z88.0 · +$193'],
-  [0,   0,  0,  0,   0,  ''],
-  [0,   0,  0,  0,   9,  '⏱ SDOH admin averted (~10 min self-screen @ $55/hr)'],
-  [0,   3,  0,  0,   0,  '⚡ 96160 health risk assessment · Z59.41 · +$3'],
-  [0,   0,  0,  0,   7,  '⏱ Z-code documentation averted (~8 min auto-gen)'],
-  [0,   80, 0,  0,   0,  '⚡ G0019 Community Health Integration · +$80'],
-  [0,   0,  0,  0,   6,  '⏱ Epic write-back averted (~7 min FHIR automation)'],
-  [0,   38, 0,  0,   0,  '⚡ G0541 Caregiver Training · Z63.6 · +$38'],
-  [47,  0,  0,  201, 5,  '⚡ 99401 Preventive counseling · Z28.3 · +$47 | ⏱ Vaccine gap detect averted'],
-  [0,   0,  0,  0,   0,  ''],
-  [0,   0,  0,  0,   0,  ''],
-  [0,   0,  0,  0,   0,  ''],
-  [0,   0,  0,  0,   0,  ''],
-  [0,   0,  0,  0,   5,  '⏱ Teach-back scoring averted (~5 min AI grading)'],
-  [0,   0,  145,0,   0,  '⚡ 99238 Discharge management · +$145'],
+  [0,   0,  0,  0,   0,  '',   0],
+  [0,   0,  0,  0,   14, '⏱ Interpreter coordination averted (~15 min @ $55/hr)', 15],
+  [0,   0,  0,  0,   0,  '',   0],
+  [193, 0,  0,  95,  0,  '⚡ 99284 ED E/M · L50.0 · Z88.0 · +$193', 0],
+  [0,   0,  0,  0,   0,  '',   0],
+  [0,   0,  0,  0,   9,  '⏱ SDOH admin averted (~10 min self-screen @ $55/hr)', 10],
+  [0,   3,  0,  0,   0,  '⚡ 96160 health risk assessment · Z59.41 · +$3', 0],
+  [0,   0,  0,  0,   7,  '⏱ Z-code documentation averted (~8 min auto-gen)', 8],
+  [0,   80, 0,  0,   0,  '⚡ G0019 Community Health Integration · +$80', 0],
+  [0,   0,  0,  0,   6,  '⏱ Epic write-back averted (~7 min FHIR automation)', 7],
+  [0,   38, 0,  0,   0,  '⚡ G0541 Caregiver Training · Z63.6 · +$38', 0],
+  [47,  0,  0,  201, 5,  '⚡ 99401 Preventive counseling · Z28.3 · +$47 | ⏱ Vaccine gap detect averted', 5],
+  [0,   0,  0,  0,   0,  '',   0],
+  [0,   0,  0,  0,   0,  '',   0],
+  [0,   0,  0,  0,   0,  '',   0],
+  [0,   0,  0,  0,   0,  '',   0],
+  [0,   0,  0,  0,   5,  '⏱ Teach-back scoring averted (~5 min AI grading)', 5],
+  [0,   0,  145,0,   0,  '⚡ 99238 Discharge management · +$145', 0],
   [0,   0,  0,  0,   0,  '']
 ];var MAX_BILL = 830; // maximum possible encounter value
 
 function updateChart(stepIdx) {
-  var mateo=0, rosa=0, disc=0, cond=0, prod=0;
+  var mateo=0, rosa=0, disc=0, cond=0, prod=0, mins=0;
   for (var i=0; i<=stepIdx && i<BILL.length; i++) {
     mateo += BILL[i][0];
     rosa  += BILL[i][1];
     disc  += BILL[i][2];
     if (BILL[i][3]) cond = BILL[i][3];
     prod  += BILL[i][4];
+    mins  += BILL[i][6] || 0;
   }
   var base = mateo + rosa + disc;
   var combined = base + prod;
@@ -1040,26 +1041,35 @@ function updateChart(stepIdx) {
   document.getElementById('bar-cond').style.width     = cond ? pct(cond) : '0%';
   document.getElementById('bar-prod').style.width     = prod ? pct(prod) : '0%';
 
-  document.getElementById('val-mateo').textContent     = mateo ? '$'+mateo  : '$0';
-  document.getElementById('val-rosa').textContent      = rosa  ? '$'+rosa   : '$0';
-  document.getElementById('val-discharge').textContent = disc  ? '$'+disc   : '$0';
-  document.getElementById('val-cond').textContent      = cond  ? '+$'+cond  : '—';
-  document.getElementById('val-prod').textContent      = prod  ? '+$'+prod  : '—';
+  document.getElementById('val-mateo').textContent     = mateo ? '$'+mateo : '$0';
+  document.getElementById('val-rosa').textContent      = rosa  ? '$'+rosa  : '$0';
+  document.getElementById('val-discharge').textContent = disc  ? '$'+disc  : '$0';
+  document.getElementById('val-cond').textContent      = cond  ? '+$'+cond : '—';
+
+  // Staff time: show $ and minutes
+  document.getElementById('val-prod').textContent     = prod ? '+$'+prod : '—';
+  document.getElementById('val-prod-min').textContent = mins ? mins+' min freed' : '';
 
   document.getElementById('chart-total').textContent = '$'+base;
   document.getElementById('chart-combined').textContent = combined ? '$'+combined : '$0';
 
+  // Combined label with time
+  var combLbl = document.getElementById('comb-time-lbl');
+  combLbl.textContent = mins ? '· '+mins+' min staff time freed' : '';
+
+  // vs strip
   var vs = document.getElementById('chart-vs');
   if (base === 0 && prod === 0) {
     vs.textContent = 'Without Canopy: $0 — all codes uncaptured, all staff time costs incurred';
     vs.style.background = '#FEF2F2'; vs.style.color = '#991B1B';
   } else {
     vs.innerHTML = 'Revenue: <strong style="color:#166534">+$'+base+'</strong>'
-      + ' &nbsp;+&nbsp; Staff time: <strong style="color:#92400E">+$'+prod+'</strong>'
+      + (prod ? ' &nbsp;+&nbsp; Staff time: <strong style="color:#92400E">+$'+prod+' / '+mins+' min</strong>' : '')
       + ' &nbsp;= &nbsp;<strong style="color:#166534">$'+combined+' vs. $0 without Canopy</strong>';
     vs.style.background = '#F0FDF4'; vs.style.color = '#166534';
   }
 
+  // Milestone toast
   var ms = document.getElementById('chart-milestone');
   var step = stepIdx < BILL.length ? BILL[stepIdx] : null;
   var hasRevenue = step && (step[0]+step[1]+step[2]) > 0;
