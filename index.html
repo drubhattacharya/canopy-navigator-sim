@@ -294,6 +294,7 @@ footer strong{color:rgba(255,255,255,.85)}
 .chart-bar-rosa{background:linear-gradient(90deg,var(--teal),#00a896)}
 .chart-bar-discharge{background:linear-gradient(90deg,#6B21A8,#9333EA)}
 .chart-bar-conditional{background:repeating-linear-gradient(45deg,#d1fae5 0px,#d1fae5 3px,#a7f3d0 3px,#a7f3d0 6px);opacity:.7}
+.chart-bar-prod{background:linear-gradient(90deg,#b45309,#d97706)}
 .chart-stream-val{font-size:10px;font-weight:700;color:var(--text-secondary);width:34px;text-align:right;flex-shrink:0}
 .chart-milestone{font-size:9px;font-weight:700;color:var(--success-text);background:var(--success-bg);border:1px solid var(--success-border);border-radius:5px;padding:2px 7px;margin-top:5px;display:none;animation:milefade .4s ease}
 @keyframes milefade{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
@@ -301,6 +302,9 @@ footer strong{color:rgba(255,255,255,.85)}
 .chart-leg-item{display:flex;align-items:center;gap:3px;font-size:9px;color:var(--text-secondary)}
 .chart-leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
 .chart-vs{margin-top:6px;padding:5px 8px;background:#FEF2F2;border-radius:7px;font-size:9px;color:#991B1B;font-weight:600;text-align:center}
+.chart-combined{display:flex;flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:4px;margin-top:8px;padding:6px 9px;background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border:1.5px solid #16a34a;border-radius:8px}
+.chart-combined-lbl{font-size:9px;font-weight:700;color:#166534;white-space:nowrap}
+.chart-combined-val{font-size:15px;font-weight:800;color:#166534;white-space:nowrap}
 
 </style>
 </head>
@@ -397,8 +401,10 @@ footer strong{color:rgba(255,255,255,.85)}
           </div>
         </div>
         <div class="chart-combined">
-          <span class="chart-combined-lbl">Total value captured &nbsp;<span id="comb-time-lbl" style="color:#92400E;font-weight:400;font-size:8px"></span></span>
-          <span class="chart-combined-val" id="chart-combined"></span>
+          <span class="chart-combined-lbl">Total value captured:</span>
+          <span id="comb-time-lbl" style="color:#92400E;font-weight:700;font-size:12px;white-space:nowrap"></span>
+          <span class="chart-combined-val" id="chart-combined" style="white-space:nowrap"></span>
+          <span id="chart-combined-pct" style="font-size:11px;font-weight:700;color:#166534;white-space:nowrap"></span>
         </div>
         <div class="chart-milestone" id="chart-milestone"></div>
         <div class="chart-legend">
@@ -1039,7 +1045,8 @@ function updateChart(stepIdx) {
   document.getElementById('bar-rosa').style.width     = pct(rosa);
   document.getElementById('bar-discharge').style.width= pct(disc);
   document.getElementById('bar-cond').style.width     = cond ? pct(cond) : '0%';
-  document.getElementById('bar-prod').style.width     = prod ? pct(prod) : '0%';
+  // Staff time bar: track on minutes scale (0–50 min = 0–100%), independent of dollar scale
+  document.getElementById('bar-prod').style.width     = mins ? Math.min(100,(mins/50)*100).toFixed(1)+'%' : '0%';
 
   document.getElementById('val-mateo').textContent     = mateo ? '$'+mateo : '$0';
   document.getElementById('val-rosa').textContent      = rosa  ? '$'+rosa  : '$0';
@@ -1051,21 +1058,41 @@ function updateChart(stepIdx) {
   document.getElementById('val-prod-min').textContent = mins ? mins+' min freed' : '';
 
   document.getElementById('chart-total').textContent = '$'+base;
-  document.getElementById('chart-combined').textContent = combined ? '$'+combined : '$0';
+  // Combined total line: "Total value captured: [N] min staff time freed & $[combined] ([pct]% more)"
+  var WITHOUT_CANOPY_REF = 338;
+  var pctMore = combined > WITHOUT_CANOPY_REF ? Math.round(((combined - WITHOUT_CANOPY_REF) / WITHOUT_CANOPY_REF) * 100) : 0;
 
-  // Combined label with time
   var combLbl = document.getElementById('comb-time-lbl');
-  combLbl.textContent = mins ? '· '+mins+' min staff time freed' : '';
+  if (mins > 0) {
+    combLbl.textContent = mins + ' min. staff time freed' + (combined > 0 ? ' &' : '');
+    // textContent doesn't render &amp; — use innerHTML for the ampersand
+    combLbl.innerHTML = mins + ' min. staff time freed' + (combined > 0 ? ' &amp;' : '');
+  } else {
+    combLbl.textContent = '';
+  }
+
+  document.getElementById('chart-combined').textContent = combined ? '$'+combined : '';
+  var pctEl = document.getElementById('chart-combined-pct');
+  pctEl.textContent = (combined > WITHOUT_CANOPY_REF && pctMore > 0) ? '('+pctMore+'% more)' : '';
 
   // vs strip
+  // WITHOUT_CANOPY: base clinical codes Eisenhower bills regardless (~99284 + ~99238 = $338)
+  var WITHOUT_CANOPY = 338;
+  var rev_delta = base - WITHOUT_CANOPY;        // incremental revenue from Canopy codes
+  var combined_delta = combined - WITHOUT_CANOPY; // incremental total (revenue + staff time)
+  var rev_pct = base > 0 ? Math.round((combined_delta / WITHOUT_CANOPY) * 100) : 0;
   var vs = document.getElementById('chart-vs');
   if (base === 0 && prod === 0) {
-    vs.textContent = 'Without Canopy: $0 — all codes uncaptured, all staff time costs incurred';
+    vs.innerHTML = 'Without Canopy: <strong>~$338</strong> (99284 + 99238 base codes only) &nbsp;&middot;&nbsp; All SDOH, CHI, vaccine and counseling codes uncaptured';
     vs.style.background = '#FEF2F2'; vs.style.color = '#991B1B';
+  } else if (base <= WITHOUT_CANOPY) {
+    vs.innerHTML = 'Without Canopy: <strong>~$'+WITHOUT_CANOPY+'</strong> &nbsp;&middot;&nbsp; Canopy building incremental value&hellip;';
+    vs.style.background = '#FFFBEB'; vs.style.color = '#92400E';
   } else {
-    vs.innerHTML = 'Revenue: <strong style="color:#166534">+$'+base+'</strong>'
-      + (prod ? ' &nbsp;+&nbsp; Staff time: <strong style="color:#92400E">+$'+prod+' / '+mins+' min</strong>' : '')
-      + ' &nbsp;= &nbsp;<strong style="color:#166534">$'+combined+' vs. $0 without Canopy</strong>';
+    vs.innerHTML = 'Without Canopy: <strong>~$'+WITHOUT_CANOPY+'</strong>'
+      + ' &nbsp;&middot;&nbsp; With Canopy: <strong style="color:#166534">$'+combined+'</strong>'
+      + (prod ? ' (revenue $'+base+' + staff time $'+prod+')' : '')
+      + ' &nbsp;&middot;&nbsp; <strong style="color:#166534">+$'+combined_delta+' &nbsp;(+'+rev_pct+'% more)</strong>';
     vs.style.background = '#F0FDF4'; vs.style.color = '#166534';
   }
 
