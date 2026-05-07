@@ -41,11 +41,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .tag-allergy{background:#FEF2F2;color:#991B1B} .tag-sdoh{background:var(--info-bg);color:var(--info-text)}
 
 /* STAGE BAR */
-.stages{background:#fff;border-bottom:1px solid var(--border);padding:.1rem 1.25rem;display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+.stages{background:#fff;border-bottom:1px solid var(--border);padding:.35rem .5rem;display:flex;gap:2px;width:100%}
 .stages::-webkit-scrollbar{display:none}
-.stage{padding:.16rem .7rem;font-size:9.5px;font-weight:500;color:var(--text-muted);border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer;transition:all .15s}
-.stage.active{color:var(--teal);border-bottom-color:var(--teal)}
+.stage{flex:1 1 0;min-width:0;text-align:center;padding:.45rem .35rem;font-size:13px;font-weight:600;color:var(--text-muted);border-bottom:3px solid transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;transition:all .15s;border-radius:6px 6px 0 0}
+.stage:hover{background:var(--ltgray);color:var(--text-secondary)}
+.stage.active{color:var(--teal);border-bottom-color:var(--teal);background:var(--ltblue);font-weight:700}
 .stage.done{color:var(--success-text);border-bottom-color:var(--success-border)}
+@media (max-width: 1100px){
+  .stage{font-size:11.5px;padding:.4rem .25rem}
+}
+@media (max-width: 820px){
+  .stage{font-size:10.5px}
+}
 
 /* BODY + GRID */
 .body{max-width:1300px;margin:.25rem auto 0;padding:0 1rem}
